@@ -2,6 +2,38 @@
 
 class InvalidRouteType extends Exception { }
 
+// Provided by Danillo César de O. Melo
+// https://github.com/danillos/fire_event/blob/master/Event.php
+class ToroHook {
+  private static $instance;
+  
+  private $hooks = array();
+  
+  private function __construct() { }
+  private function __clone() { }
+  
+  public static function add($hook_name, $fn) {
+    $instance = self::get_instance();
+    $instance->hooks[$hook_name][] = $fn;
+  }
+  
+  public static function fire($hook_name, $params=null) {
+    $instance = self::get_instance();
+    if (array_key_exists($hook_name, $instance->hooks)) {
+      foreach ($instance->hooks[$hook_name] as $fn) {
+        call_user_func_array($fn, array(&$params));
+      }
+    }
+  }
+  
+  public static function get_instance() {
+    if (!isset(self::$instance)) {
+      self::$instance = new ToroHook();
+    }
+    return self::$instance;
+  }
+}
+
 class ToroApplication {
   private $_handler_route_pairs = Array();
 
@@ -17,6 +49,8 @@ class ToroApplication {
   }
 
   public function serve() {
+    ToroHook::fire('before_request');
+    
     $request_method = strtolower($_SERVER['REQUEST_METHOD']);
     $path_info = isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : '/';
     $discovered_handler = null;
@@ -73,13 +107,16 @@ class ToroApplication {
         $request_method .= '_mobile';
       }
 
+      ToroHook::fire('before_handler');
       call_user_func_array(Array($handler_instance, $request_method), $method_arguments);
+      ToroHook::fire('after_handler');
     }
     else {
       header("HTTP/1.0 404 Not Found");
       echo "404 Not Found";
-      exit;
     }
+    
+    ToroHook::fire('after_request');
   }
 
   private function xhr_request() {
