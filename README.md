@@ -48,7 +48,7 @@ Here is a slightly more advanced application garnished with pseudocode:
     class CommentHandler extends ToroHandler {
       public function post($slug) {
         echo "Validate slug - redirect if not found.";
-        echo "Peek into $_POST, save the comment, and redirect."
+        echo "Peek into $_POST, save the comment, and redirect.";
       }
 
       public function post_xhr($slug) {
