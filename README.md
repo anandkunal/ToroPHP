@@ -72,6 +72,33 @@ Here is a slightly more advanced application garnished with pseudocode:
 
     $site->serve();
 
+
+## Toro Hooks
+
+There are 4 possible hooks (callbacks).
+
+    ToroHook::add("before_request", function() { });
+    ToroHook::add("before_handler", function() { });
+    ToroHook::add("after_handler", function() { });
+    ToroHook::add("after_request", function() { });
+
+While you can hook before\_handler and after\_handler anywhere, like index.php, most people will probably want to use it in a handler's constructor:
+
+    class SomeHandler extends ToroHandler {
+      public function __construct() {
+        ToroHook::add("before_handler", function() { echo "before"; });
+        ToroHook::add("after_handler", function() { echo "after"; });
+      }
+
+      public function get() {
+        echo "I am some handler";
+      }
+    }
+
+Adding a hook pushes the function into an array. When a particular hook is fired, all of the functions are fired in the appropriate order. 
+
+ToroHook was provided by [Danillo César de O. Melo](https://github.com/danillos/fire_event/blob/master/Event.php). ToroHook will be the foundation for the future plugin system.
+
 ## Installation
 
 Grab the source or packaged download. If you grab the download, you will need to do the following:
@@ -91,10 +118,8 @@ Couch the following in your Apache configuration or .htaccess:
 
 The immediate plan is to complete the following:
 
-* Support global and handler callbacks.
 * Add a skeleton project.
 * Improve documentation.
 * Setup a mailing list/group.
-* Brainstorm a plugin model. What are some good implementations?
 
 Toro is intended to be a minimal framework to help you organize and prototype your next PHP application. As the project's maintainer, it's my goal to make sure the source stays lean and focused.
