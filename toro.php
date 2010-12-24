@@ -58,9 +58,7 @@ class ToroApplication {
     $method_arguments = null;
 
     foreach ($this->_handler_route_pairs as $handler) {
-      $pattern = $handler[0];
-      $pattern_type = $handler[1];
-      $handler_name = $handler[2];
+      list($pattern, $pattern_type, $handler_name) = $handler;
 
       // Argument overrides (must be an array)
       if (isset($handler[3])) {
