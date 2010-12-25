@@ -112,6 +112,7 @@ class ToroApplication {
         else {
             header('HTTP/1.0 404 Not Found');
             echo '404 Not Found';
+            exit;
         }
     
         ToroHook::fire('after_request');
