@@ -53,9 +53,9 @@ class ToroApplication {
     
         $request_method = strtolower($_SERVER['REQUEST_METHOD']);
         $path_info = isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : '/';
-        $discovered_handler = null;
-        $regex_matches = Array();
-        $method_arguments = null;
+        $discovered_handler = NULL;
+        $regex_matches = array();
+        $method_arguments = NULL;
 
         foreach ($this->_handler_route_pairs as $handler) {
             list($pattern, $pattern_type, $handler_name) = $handler;
