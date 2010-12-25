@@ -61,12 +61,7 @@ class ToroApplication {
             list($pattern, $pattern_type, $handler_name) = $handler;
 
             // Argument overrides (must be an array)
-            if (isset($handler[3])) {
-                $method_arguments = $handler[3];
-            }
-            else {
-                $method_arguments = null;
-            }
+            $method_arguments = isset($handler[3]) ? $handler[3] : NULL;
 
             if ($pattern_type == 'string' && $path_info == $pattern) {
                 $discovered_handler = $handler_name;
