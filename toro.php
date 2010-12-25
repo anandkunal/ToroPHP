@@ -39,12 +39,7 @@ class ToroApplication {
 
     public function __construct($handler_route_pairs) {
         foreach ($handler_route_pairs as $pair) {
-            if ($pair[1] == 'string' || $pair[1] == 'regex') {
-                array_push($this->_handler_route_pairs, $pair);
-            }
-            else {
-                throw new InvalidRouteType();
-            }
+            array_push($this->_handler_route_pairs, $pair);
         }
     }
 
@@ -58,20 +53,22 @@ class ToroApplication {
         $method_arguments = NULL;
 
         foreach ($this->_handler_route_pairs as $handler) {
-            list($pattern, $pattern_type, $handler_name) = $handler;
+            list($pattern, $handler_name) = $handler;
 
             // Argument overrides (must be an array)
-            if (isset($handler[3]) && is_array($handler[3])) {
-                $method_arguments = $handler[3];
+            if (isset($handler[2]) && is_array($handler[2])) {
+                $method_arguments = $handler[2];
             }
 
-            if ($pattern_type == 'string' && $path_info == $pattern) {
-                $discovered_handler = $handler_name;
+            if ($path_info == $pattern) {
+                $discovered_handler = $handler_name;            
                 $regex_matches = array($path_info, preg_replace('/^\//', '', $path_info));
                 break;
             }
-            else if ($pattern_type == 'regex') {
-                if (preg_match('/' . $pattern . '/', $path_info, $matches)) {
+            else {
+                $pattern = str_replace('/', '\/', $pattern);                
+                
+                if (preg_match('/^\/' . $pattern . '\/?$/', $path_info, $matches)) {
                     $discovered_handler = $handler_name;
                     $regex_matches = $matches;
                     break;
