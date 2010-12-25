@@ -39,7 +39,7 @@ class ToroApplication {
 
     public function __construct($handler_route_pairs) {
         foreach ($handler_route_pairs as $pair) {
-            array_push($this->_handler_route_pairs, $pair);
+            $this->_handler_route_pairs[] = $pair;
         }
     }
 
