@@ -8,16 +8,16 @@ Toro is a tiny framework for PHP that lets you prototype web applications quickl
 
 The canonical "Hello, world" example:
 
-    require_once('toro.php');
+    require_once 'toro.php';
     
     class MainHandler extends ToroHandler {
-      public function get() { 
-        echo "Hello, world";
-      }
+        public function get() { 
+            echo 'Hello, world';
+        }
     }
     
-    $site = new ToroApplication(Array(
-      Array('/', 'string', 'MainHandler')
+    $site = new ToroApplication(array(
+        array('/', 'MainHandler')
     ));
     
     $site->serve();
@@ -26,48 +26,48 @@ The canonical "Hello, world" example:
 
 Here is a slightly more advanced application garnished with pseudocode:
 
-    require_once('toro.php');
+    require_once 'toro.php';
 
     class BlogHandler extends ToroHandler {
-      public function get() { 
-        echo "This the front page of the blog. Load all articles.";
-      }
+        public function get() { 
+            echo 'This the front page of the blog. Load all articles.';
+        }
 
-      public function get_mobile() {
-        // _mobile => fires if iPhone/Android/webOS is detected
-        echo "Load a subset of the articles.";
-      }
+        public function get_mobile() {
+            // _mobile => fires if iPhone/Android/webOS is detected
+            echo 'Load a subset of the articles.';
+        }
     }
 
     class ArticleHandler extends ToroHandler {
-      public function get($slug) {
-        echo "Load an article that matches the slug: " . $slug;
-      }
+        public function get($slug) {
+            echo 'Load an article that matches the slug: ' . $slug;
+        }
     }
 
     class CommentHandler extends ToroHandler {
-      public function post($slug) {
-        echo "Validate slug - redirect if not found.";
-        echo "Peek into $_POST, save the comment, and redirect.";
-      }
+        public function post($slug) {
+            echo 'Validate slug - redirect if not found.';
+            echo 'Peek into $_POST, save the comment, and redirect.';
+        }
 
-      public function post_xhr($slug) {
-        // _xhr => fires if XHR request is detected
-        echo "Validate, save, and return a JSON blob.";
-      }
+        public function post_xhr($slug) {
+            // _xhr => fires if XHR request is detected
+            echo 'Validate, save, and return a JSON blob.';
+        }
     }
 
     class SyndicationHandler extends ToroHandler {
-      public function get() {
-        echo "Display some recent entries in RSS/Atom.";
-      }
+        public function get() {
+            echo 'Display some recent entries in RSS/Atom.';
+        }
     }
 
-    $site = new ToroApplication(Array(
-      Array('/', 'string', 'BlogHandler'),
-      Array('^\/article\/([a-zA-Z0-9_]+)\/?$', 'regex', 'ArticleHandler'),
-      Array('^\/comment\/([a-zA-Z0-9_]+)\/?$', 'regex', 'CommentHandler'),
-      Array('/feed', 'string', 'SyndicationHandler')
+    $site = new ToroApplication(array(
+        array('/', 'BlogHandler'),
+        array('article/([a-zA-Z0-9_]+)', 'ArticleHandler'),
+        array('comment/([a-zA-Z0-9_]+)', 'CommentHandler'),
+        array('feed', 'SyndicationHandler')
     ));
 
     $site->serve();
@@ -77,22 +77,22 @@ Here is a slightly more advanced application garnished with pseudocode:
 
 There are 4 possible hooks (callbacks).
 
-    ToroHook::add("before_request", function() { });
-    ToroHook::add("before_handler", function() { });
-    ToroHook::add("after_handler", function() { });
-    ToroHook::add("after_request", function() { });
+    ToroHook::add('before_request', function() {});
+    ToroHook::add('before_handler', function() {});
+    ToroHook::add('after_handler',  function() {});
+    ToroHook::add('after_request',  function() {});
 
 While you can hook before\_handler and after\_handler anywhere, like index.php, most people will probably want to use it in a handler's constructor:
 
     class SomeHandler extends ToroHandler {
-      public function __construct() {
-        ToroHook::add("before_handler", function() { echo "before"; });
-        ToroHook::add("after_handler", function() { echo "after"; });
-      }
+        public function __construct() {
+            ToroHook::add('before_handler', function() { echo 'before'; });
+            ToroHook::add('after_handler', function() { echo 'after'; });
+        }
 
-      public function get() {
-        echo "I am some handler";
-      }
+        public function get() {
+            echo 'I am some handler.';
+        }
     }
 
 Adding a hook pushes the function into an array. When a particular hook is fired, all of the functions are fired in the appropriate order. 
