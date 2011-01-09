@@ -101,25 +101,20 @@ ToroHook was provided by [Danillo César de O. Melo](https://github.com/danillos
 
 ## Installation
 
-Grab the source or packaged download. If you grab the download, you will need to do the following:
-
-    tar xvzf torophp-0.1.tar.gz
-    cd torophp-0.1
-    cp toro.php /path/to/htdocs/
+Grab the source and copy toro.php to your htdocs or lib directory directory.
 
 Couch the following in your Apache configuration or .htaccess:
 
     RewriteEngine on
-    RewriteCond %{REQUEST_FILENAME} !^/index.php
-    RewriteCond %{DOCUMENT_ROOT}/%{REQUEST_FILENAME} !-f
-    RewriteRule ^/(.+)$ /index.php/$1
+    RewriteCond $1 !^(index\.php)
+    RewriteRule ^(.*)$ index.php/$1 [L]
 
 ## Roadmap
 
 The immediate plan is to complete the following:
 
-* Add a skeleton project.
-* Improve documentation.
-* Setup a mailing list/group.
+* Add more example projects.
+* Add more documentation.
+* Setup a mailing list.
 
-Toro is intended to be a minimal framework to help you organize and prototype your next PHP application. As the project's maintainer, it's my goal to make sure the source stays lean and focused.
+Toro is intended to be a minimal framework to help you organize and prototype your next PHP application. One of the project's goals is to make sure the source stays lean.
