@@ -55,14 +55,10 @@ class ToroApplication {
         foreach ($this->_handler_route_pairs as $handler) {
             list($pattern, $handler_name) = $handler;
 
-            // Argument overrides (must be an array)
-            if (isset($handler[2]) && is_array($handler[2])) {
-                $method_arguments = $handler[2];
-            }
-
             if ($path_info == $pattern) {
                 $discovered_handler = $handler_name;            
                 $regex_matches = array($path_info, preg_replace('/^\//', '', $path_info));
+                $method_arguments = $this->get_argument_overrides($handler);
                 break;
             }
             else {
@@ -71,6 +67,7 @@ class ToroApplication {
                 if (preg_match('/^\/' . $pattern . '\/?$/', $path_info, $matches)) {
                     $discovered_handler = $handler_name;
                     $regex_matches = $matches;
+                    $method_arguments = $this->get_argument_overrides($handler);
                     break;
                 }
             }
@@ -110,6 +107,13 @@ class ToroApplication {
         }
     
         ToroHook::fire('after_request');
+    }
+
+    private function get_argument_overrides($handler_route) {
+        if (isset($handler_route[2]) && is_array($handler_route[2])) {
+            return $handler_route[2];
+        }
+        return NULL;
     }
 
     private function xhr_request() {
