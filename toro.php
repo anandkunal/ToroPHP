@@ -45,14 +45,16 @@ class ToroApplication {
 
     public function serve() {
         ToroHook::fire('before_request');
-    
-        $request_method = strtolower($_SERVER['REQUEST_METHOD']);
+        
+        $path_info = '/';
         if (isset($_SERVER['PATH_INFO'])) {
-            $path_info = isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : '/';
+            $path_info = $_SERVER['PATH_INFO'];
         }
         if (isset($_SERVER['ORIG_PATH_INFO'])) {
-            $path_info = isset($_SERVER['ORIG_PATH_INFO']) ? $_SERVER['ORIG_PATH_INFO'] : '/';
+            $path_info = $_SERVER['ORIG_PATH_INFO'];
         }
+    
+        $request_method = strtolower($_SERVER['REQUEST_METHOD']);
         $discovered_handler = NULL;
         $regex_matches = array();
         $method_arguments = NULL;
