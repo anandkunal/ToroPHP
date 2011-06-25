@@ -47,7 +47,9 @@ class ToroApplication {
         ToroHook::fire('before_request');
     
         $request_method = strtolower($_SERVER['REQUEST_METHOD']);
-        $path_info = isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : '/';
+        $path_info = '/';
+        if (isset($_SERVER['PATH_INFO'])) $path_info = $_SERVER['PATH_INFO'];
+        if (isset($_SERVER['ORIG_PATH_INFO'])) $path_info = $_SERVER['ORIG_PATH_INFO'];
         $discovered_handler = NULL;
         $regex_matches = array();
         $method_arguments = NULL;
@@ -121,11 +123,11 @@ class ToroApplication {
     }
 
     private function ipad_request() {
-        return strstr($_SERVER['HTTP_USER_AGENT'], 'iPad');
+        return isset($_SERVER['HTTP_USER_AGENT']) && strstr($_SERVER['HTTP_USER_AGENT'], 'iPad');
     }
 
     private function mobile_request() {
-        return strstr($_SERVER['HTTP_USER_AGENT'], 'iPhone') || strstr($_SERVER['HTTP_USER_AGENT'], 'iPod') || strstr($_SERVER['HTTP_USER_AGENT'], 'Android') || strstr($_SERVER['HTTP_USER_AGENT'], 'webOS');
+        return isset($_SERVER['HTTP_USER_AGENT']) && (strstr($_SERVER['HTTP_USER_AGENT'], 'iPhone') || strstr($_SERVER['HTTP_USER_AGENT'], 'iPod') || strstr($_SERVER['HTTP_USER_AGENT'], 'Android') || strstr($_SERVER['HTTP_USER_AGENT'], 'webOS'));
     }
 }
 
