@@ -1,4 +1,4 @@
-<?php
+<?php
 
 class InvalidRouteType extends Exception {}
 
@@ -14,7 +14,7 @@ class ToroHook {
   
     public static function add($hook_name, $fn) {
         $instance = self::get_instance();
-        $instance->hooks[$hook_name][] = $fn;
+        $instance->hooks[$hook_name][] = $fn;
     }
   
     public static function fire($hook_name, $params = NULL) {
