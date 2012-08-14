@@ -10,7 +10,7 @@ class Toro {
         $regex_matches = array();
 
         if (isset($routes[$path_info])) {
-            $discovered_handler = $handler_name;
+            $discovered_handler = $routes[$path_info];
         }
         else {
             foreach ($routes as $pattern => $handler_name) {
