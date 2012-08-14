@@ -75,7 +75,7 @@ ToroHook::add("after_handler",  function() {});
 ToroHook::add("after_request",  function() {});
 ```
 
-While you can hook before\_handler and after\_handler anywhere, like index.php, most people will probably want to use it in a handler's constructor:
+Hooking `before_handler` and `after_handler` should be performed in a handler's constructor:
 
 ```php
 <?php
