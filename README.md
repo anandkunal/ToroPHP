@@ -10,6 +10,7 @@ The canonical "Hello, world" example:
 
 ```php
 <?php
+
 require_once 'toro.php';
 
 class MainHandler extends ToroHandler {
