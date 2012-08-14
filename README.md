@@ -9,6 +9,7 @@ Toro is a tiny framework for PHP that lets you prototype web applications quickl
 The canonical "Hello, world" example:
 
 ```php
+<?php
 require_once 'toro.php';
 
 class MainHandler extends ToroHandler {
