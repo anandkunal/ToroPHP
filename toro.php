@@ -9,12 +9,11 @@ class Toro {
         $discovered_handler = NULL;
         $regex_matches = array();
 
-        foreach ($routes as $pattern => $handler_name) {
-            if ($path_info == $pattern) {
-                $discovered_handler = $handler_name;
-                break;
-            }
-            else {
+        if (isset($routes[$path_info])) {
+            $discovered_handler = $handler_name;
+        }
+        else {
+            foreach ($routes as $pattern => $handler_name) {
                 $pattern = str_replace(':string', '[a-zA-Z]+', $pattern);
                 $pattern = str_replace(':number', '[0-9]+', $pattern);
                 $pattern = str_replace(':alpha', '[a-zA-Z0-9-_]+', $pattern);
