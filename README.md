@@ -8,19 +8,21 @@ Toro is a tiny framework for PHP that lets you prototype web applications quickl
 
 The canonical "Hello, world" example:
 
-    require_once 'toro.php';
-    
-    class MainHandler extends ToroHandler {
-        public function get() { 
-            echo 'Hello, world';
-        }
+```php
+require_once 'toro.php';
+
+class MainHandler extends ToroHandler {
+    public function get() {
+        echo 'Hello, world';
     }
-    
-    $site = new ToroApplication(array(
-        array('/', 'MainHandler')
-    ));
-    
-    $site->serve();
+}
+
+$site = new ToroApplication(array(
+    array('/', 'MainHandler')
+));
+
+$site->serve();
+```
 
 ## A Substantial Application
 
@@ -29,7 +31,7 @@ Here is a slightly more advanced application garnished with pseudocode:
     require_once 'toro.php';
 
     class BlogHandler extends ToroHandler {
-        public function get() { 
+        public function get() {
             echo 'This the front page of the blog. Load all articles.';
         }
 
@@ -95,7 +97,7 @@ While you can hook before\_handler and after\_handler anywhere, like index.php, 
         }
     }
 
-Adding a hook pushes the function into an array. When a particular hook is fired, all of the functions are fired in the appropriate order. 
+Adding a hook pushes the function into an array. When a particular hook is fired, all of the functions are fired in the appropriate order.
 
 ToroHook was provided by [Danillo César de O. Melo](https://github.com/danillos/fire_event/blob/master/Event.php). ToroHook will be the foundation for the future plugin system.
 
