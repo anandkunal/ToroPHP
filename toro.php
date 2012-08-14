@@ -9,17 +9,15 @@ class Toro {
         $discovered_handler = NULL;
         $regex_matches = array();
 
-        foreach ($routes as $pattern => $handler_name) {
-            if ($path_info == $pattern) {
-                $discovered_handler = $handler_name;
-                break;
-            }
-            else {
+        if (isset($routes[$path_info])) {
+            $discovered_handler = $routes[$path_info];
+        }
+        else {
+            foreach ($routes as $pattern => $handler_name) {
                 $pattern = str_replace(':string', '[a-zA-Z]+', $pattern);
                 $pattern = str_replace(':number', '[0-9]+', $pattern);
                 $pattern = str_replace(':alpha', '[a-zA-Z0-9-_]+', $pattern);
-                $pattern = str_replace('/', '\/', $pattern);
-                if (preg_match('/^\/?' . $pattern . '\/?$/', $path_info, $matches)) {
+                if (preg_match('|^/?' . $pattern . '/?$|', $path_info, $matches)) {
                     $discovered_handler = $handler_name;
                     $regex_matches = $matches;
                     break;
@@ -33,11 +31,11 @@ class Toro {
 
             if (self::xhr_request() && method_exists($discovered_handler, $request_method . '_xhr')) {
                 header('Content-type: application/json');
-                header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-                header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-                header("Cache-Control: no-store, no-cache, must-revalidate");
-                header("Cache-Control: post-check=0, pre-check=0", false);
-                header("Pragma: no-cache");
+                header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+                header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+                header('Cache-Control: no-store, no-cache, must-revalidate');
+                header('Cache-Control: post-check=0, pre-check=0', false);
+                header('Pragma: no-cache');
                 $request_method .= '_xhr';
             }
 
@@ -53,7 +51,7 @@ class Toro {
     }
 
     private static function xhr_request() {
-        return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest';
+        return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest';
     }
 }
 
@@ -72,7 +70,7 @@ class ToroHook {
 
     public static function fire($hook_name, $params = NULL) {
         $instance = self::get_instance();
-        if (array_key_exists($hook_name, $instance->hooks)) {
+        if (isset($instance->hooks[$hook_name])) {
             foreach ($instance->hooks[$hook_name] as $fn) {
                 call_user_func_array($fn, array(&$params));
             }
@@ -80,7 +78,7 @@ class ToroHook {
     }
 
     public static function get_instance() {
-        if (!isset(self::$instance)) {
+        if (empty(self::$instance)) {
             self::$instance = new ToroHook();
         }
         return self::$instance;
