@@ -31,11 +31,11 @@ class Toro {
 
             if (self::xhr_request() && method_exists($discovered_handler, $request_method . '_xhr')) {
                 header('Content-type: application/json');
-                header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-                header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-                header("Cache-Control: no-store, no-cache, must-revalidate");
-                header("Cache-Control: post-check=0, pre-check=0", false);
-                header("Pragma: no-cache");
+                header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+                header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+                header('Cache-Control: no-store, no-cache, must-revalidate');
+                header('Cache-Control: post-check=0, pre-check=0', false);
+                header('Pragma: no-cache');
                 $request_method .= '_xhr';
             }
 
@@ -51,7 +51,7 @@ class Toro {
     }
 
     private static function xhr_request() {
-        return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest';
+        return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest';
     }
 }
 
@@ -70,7 +70,7 @@ class ToroHook {
 
     public static function fire($hook_name, $params = NULL) {
         $instance = self::get_instance();
-        if (array_key_exists($hook_name, $instance->hooks)) {
+        if (isset($instance->hooks[$hook_name])) {
             foreach ($instance->hooks[$hook_name] as $fn) {
                 call_user_func_array($fn, array(&$params));
             }
@@ -78,7 +78,7 @@ class ToroHook {
     }
 
     public static function get_instance() {
-        if (!isset(self::$instance)) {
+        if (empty(self::$instance)) {
             self::$instance = new ToroHook();
         }
         return self::$instance;
