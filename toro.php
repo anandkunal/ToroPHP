@@ -18,8 +18,7 @@ class Toro {
                 $pattern = str_replace(':string', '[a-zA-Z]+', $pattern);
                 $pattern = str_replace(':number', '[0-9]+', $pattern);
                 $pattern = str_replace(':alpha', '[a-zA-Z0-9-_]+', $pattern);
-                $pattern = str_replace('/', '\/', $pattern);
-                if (preg_match('/^\/?' . $pattern . '\/?$/', $path_info, $matches)) {
+                if (preg_match('|^/?' . $pattern . '/?$|', $path_info, $matches)) {
                     $discovered_handler = $handler_name;
                     $regex_matches = $matches;
                     break;
