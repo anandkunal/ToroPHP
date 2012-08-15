@@ -1,11 +1,24 @@
-# ToroPHP
+# Toro
 
-Toro is a tiny router that lets you develop PHP web applications quickly.
+Toro is a PHP router for developing RESTful web applications and APIs. Toro is for minimalists that want to rapidly prototype big ideas while writing beautiful code.
 
-* [Official Website & Documentation](http://toroweb.org)
+## Quick Links
+
+- [Official Website](http://toroweb.org)
+- [Changelog](https://github.com/anandkunal/ToroPHP/wiki/Changelog)
+- Design Goals [SOON]
+- Recipes (auth, error handling, etc.) [SOON]
+
+## Features
+
+- RESTful routing using strings, regular expressions, and defined types (`number`, `string`, `alpha`)
+- Flexible error handling and callbacks via `ToroHook`
+- Intuitive and self-documented core (`toro.php`)
+- PHPUnit coverage for core classes
+- Tested with PHP 5.3 and above
 
 
-## The Primordial Application
+## "Hello, world"
 
 The canonical "Hello, world" example:
 
@@ -23,59 +36,33 @@ Toro::serve(array(
 ));
 ```
 
-## A Substantial Application
 
-Here is a slightly more advanced application garnished with pseudocode:
+## Routing Basics
 
-```php
-<?php
-
-class BlogHandler extends ToroHandler {
-    function get() {
-        echo "This the front page of the blog. Load all articles.";
-    }
-}
-
-class ArticleHandler extends ToroHandler {
-    function get($slug) {
-        echo "Load an article that matches the slug: $slug.";
-    }
-}
-
-class CommentHandler extends ToroHandler {
-    function post($slug) {
-        echo "Peek into the POST, save the comment, and redirect.";
-    }
-
-    function post_xhr($slug) {
-        echo "Validate, save, and return a JSON blob.";
-    }
-}
-
-Toro::serve(array(
-    "/" => "BlogHandler",
-    "/article/:alpha", "ArticleHandler",
-    "/article/:alpha/comment", "CommentHandler"),
-));
-```
+[Coming soon]
 
 
-## Toro Hooks
+## RESTful Handlers
 
-There are 5 possible hooks (callbacks).
+[Coming soon]
+
+
+## ToroHook (Callbacks)
+
+As of v2.0.0, there are a total of five Toro-specific hooks (callbacks):
 
 ```php
 <?php
 
+// Fired for 404 errors
 ToroHook::add("404",  function() {});
 
+// Before/After callbacks
 ToroHook::add("before_request", function() {});
-ToroHook::add("before_handler", function() {});
-ToroHook::add("after_handler",  function() {});
 ToroHook::add("after_request",  function() {});
 ```
 
-Hooking `before_handler` and `after_handler` should be performed in a handler's constructor:
+`before_handler` and `after_handler` should be defined within a specific handler, ideally in the constructor:
 
 ```php
 <?php
@@ -92,27 +79,28 @@ class SomeHandler extends ToroHandler {
 }
 ```
 
-Adding a hook pushes the function into an array. When a particular hook is fired, all of the functions are fired in the appropriate order.
+Adding a hook pushes the function into an array for the given hook name. When a particular hook is fired, all of the functions are fired in order.
 
 
 ## Installation
 
-Grab the source and copy toro.php to your htdocs or lib directory.
-
-Couch the following in your Apache configuration or .htaccess:
+Grab a copy of the repository and move `toro.php` to your htdocs or library directory. You may need to add the following snippet in your Apache virtual host configuration or `.htaccess`:
 
     RewriteEngine on
     RewriteCond $1 !^(index\.php)
     RewriteRule ^(.*)$ index.php/$1 [L]
 
 
-## Credits
+## Contributions
 
-ToroHook was provided by [Danillo César de O. Melo](https://github.com/danillos/fire_event/blob/master/Event.php). ToroHook will be the foundation for the future plugin system.
+- Toro was inspired by the [Tornado Web Server](http://www.tornadoweb.org) (FriendFeed/Facebook)
+- [Berker Peksag](http://berkerpeksag.com), [Martin Bean](http://www.martinbean.co.uk), [Robbie Coleman](http://robbie.robnrob.com), and [John Kurkowski](http://about.me/john.kurkowski) for bug fixes and patches
+- [Danillo César de O. Melo](https://github.com/danillos/fire_event/blob/master/Event.php) for `ToroHook`
+- [Jason Mooberry](http://jasonmooberry.com) for code optimizations and feedback
 
-Special thanks to [Jason Mooberry](http://jasonmooberry.com) for code optimizations.
+Contributions to Toro are welcome via pull requests. Note, all requests will be reviewed carefully. Please try to add test coverage for new feature development.
 
 
 ## License
 
-ToroPHP is open-source software licensed under the MIT License.
+ToroPHP was created by [Kunal Anand](http://kunalanand.com) and is released under the MIT License.
