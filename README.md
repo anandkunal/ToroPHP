@@ -64,7 +64,7 @@ ToroHook::add("after_handler", function() {});
 ToroHook::add("after_request",  function() {});
 ```
 
-`before_handler` and `after_handler` should be defined within a specific handler, ideally in the constructor:
+`before_handler` and `after_handler` are defined within a specific handler, ideally in the constructor:
 
 ```php
 <?php
