@@ -81,7 +81,7 @@ class SomeHandler extends ToroHandler {
 }
 ```
 
-Adding a hook pushes the function into an array for the given hook name. When a particular hook is fired, all of the functions are fired in order.
+Adding a hook pushes the function into an array (`"before_handler" => array()`). When a particular hook is fired, all of the functions are called sequentially.
 
 
 ## Installation
