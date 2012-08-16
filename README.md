@@ -65,7 +65,6 @@ Toro::serve(Array(
     "/product/([a-zA-Z0-9-_]+)" => "ProductHandler",
     "/manufacturer/([a-zA-Z]+)" => "ManufacturerHandler"
 ));
-?>
 ```
 
 
