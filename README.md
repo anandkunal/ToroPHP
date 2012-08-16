@@ -24,7 +24,7 @@ The canonical "Hello, world" example:
 ```php
 <?php
 
-class MainHandler extends ToroHandler {
+class MainHandler {
     function get() {
         echo "Hello, world";
     }
@@ -71,7 +71,7 @@ Pattern matches are passed in order as arguments to the handler's request method
 ```php
 <?php
 
-class ProductHandler extends ToroHandler {
+class ProductHandler {
     function get($name) {
         echo "You want to see product: $name";
     }
@@ -84,7 +84,7 @@ class ProductHandler extends ToroHandler {
 ```php
 <?php
 
-class ExampleHandler extends ToroHandler {
+class ExampleHandler {
     function get() { }
     function post() { }
     function get_xhr() { }
@@ -121,7 +121,7 @@ ToroHook::add("after_request",  function() {});
 ```php
 <?php
 
-class SomeHandler extends ToroHandler {
+class SomeHandler {
     function __construct() {
         ToroHook::add("before_handler", function() { echo "Before"; });
         ToroHook::add("after_handler", function() { echo "After"; });
