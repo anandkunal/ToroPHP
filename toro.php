@@ -89,5 +89,3 @@ class ToroHook {
         return self::$instance;
     }
 }
-
-class ToroHandler { }
