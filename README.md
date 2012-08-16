@@ -6,7 +6,7 @@ Toro is a PHP router for developing RESTful web applications and APIs. Toro is f
 
 - [Official Website](http://toroweb.org)
 - [Changelog](https://github.com/anandkunal/ToroPHP/wiki/Changelog)
-- Design Goals [SOON]
+- [Design Goals](https://github.com/anandkunal/ToroPHP/wiki/Design-Goals)
 - Recipes (auth, error handling, etc.) [SOON]
 
 ## Features
@@ -64,7 +64,7 @@ ToroHook::add("after_handler", function() {});
 ToroHook::add("after_request",  function() {});
 ```
 
-`before_handler` and `after_handler` are defined within a specific handler, ideally in the constructor:
+`before_handler` and `after_handler` are defined within handler's constructor:
 
 ```php
 <?php
@@ -81,7 +81,7 @@ class SomeHandler extends ToroHandler {
 }
 ```
 
-Adding a hook pushes the function into an array (`"before_handler" => array()`). When a particular hook is fired, all of the functions are called sequentially.
+Adding a hook pushes the provided anonymous function into an array. When a hook is fired, all of the functions are called sequentially.
 
 
 ## Installation
