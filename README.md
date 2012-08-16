@@ -81,7 +81,7 @@ class SomeHandler extends ToroHandler {
 }
 ```
 
-Adding a hook pushes the provided anonymous function into an array. When a hook is fired, all of the functions are called sequentially.
+Hooks can also be stacked. Adding a hook pushes the provided anonymous function into an array. When a hook is fired, all of the functions are called sequentially.
 
 
 ## Installation
