@@ -9,6 +9,7 @@ Toro is a PHP router for developing RESTful web applications and APIs. Toro is f
 - [Design Goals](https://github.com/anandkunal/ToroPHP/wiki/Design-Goals)
 - Recipes (auth, error handling, etc.) [SOON]
 
+
 ## Features
 
 - RESTful routing using strings, regular expressions, and defined types (`number`, `string`, `alpha`)
@@ -44,7 +45,22 @@ Toro::serve(array(
 
 ## RESTful Handlers
 
-[Coming soon]
+```php
+<?php
+
+class ExampleHandler extends ToroHandler {
+    function get() { } // GET
+    function post() { } // POST
+    function get_xhr() { } // GET (JSON/XHR)
+    function post_xhr() { } // POST (JSON/XHR)
+}
+```
+
+From the above, you can see two emergent patterns.
+
+1. Methods named after the HTTP request method (`GET`, `POST`, `PUT`, `DELETE`) are automatically called.
+
+2. Append `_xhr` to a method to match JSON/`XMLHTTPRequest` requests.
 
 
 ## ToroHook (Callbacks)
