@@ -67,6 +67,18 @@ Toro::serve(Array(
 ));
 ```
 
+Pattern matches are passed in order as arguments to the handler's request method. In the case of `ProductHandler` above:
+
+```php
+<?php
+
+class ProductHandler extends ToroHandler {
+    function get($name) {
+        echo "You want to see product: $name";
+    }
+}
+```
+
 
 ## RESTful Handlers
 
@@ -74,10 +86,10 @@ Toro::serve(Array(
 <?php
 
 class ExampleHandler extends ToroHandler {
-    function get() { } // GET
-    function post() { } // POST
-    function get_xhr() { } // GET (JSON/XHR)
-    function post_xhr() { } // POST (JSON/XHR)
+    function get() { }
+    function post() { }
+    function get_xhr() { }
+    function post_xhr() { }
 }
 ```
 
