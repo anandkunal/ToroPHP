@@ -7,7 +7,6 @@ Toro is a PHP router for developing RESTful web applications and APIs. Toro is f
 - [Official Website](http://toroweb.org)
 - [Changelog](https://github.com/anandkunal/ToroPHP/wiki/Changelog)
 - [Design Goals](https://github.com/anandkunal/ToroPHP/wiki/Design-Goals)
-- Recipes (auth, error handling, etc.) [SOON]
 
 
 ## Features
@@ -40,7 +39,34 @@ Toro::serve(array(
 
 ## Routing Basics
 
-[Coming soon]
+Routing with Toro is simple:
+
+```php
+<?php
+
+Toro::serve(Array(
+    "/catalog" => "CatalogHandler",
+    "/catalog/page/:number" => "CatalogHandler",
+    "/product/:alpha" => "ProductHandler",
+    "/manufacturer/:string" => "ManufacturerHandler"
+));
+```
+
+An application's route table is expressed as an associative array (`route_pattern => handler`). This is closely modeled after [Tornado](http://tornadoweb.org) (Python). Routes are not expressed as anonymous functions to prevent unnecessary code duplication for RESTful dispatching.
+
+From the above example, route stubs, such as `:number`, `:string`, and `:alpha` can be conveniently used instead of common regular expressions. Of course, regular expressions are still welcome. The previous example could also be expressed as:
+
+```php
+<?php
+
+Toro::serve(Array(
+    "/catalog" => "CatalogHandler",
+    "/catalog/page/([0-9]+)" => "CatalogHandler",
+    "/product/([a-zA-Z0-9-_]+)" => "ProductHandler",
+    "/manufacturer/([a-zA-Z]+)" => "ManufacturerHandler"
+));
+?>
+```
 
 
 ## RESTful Handlers
@@ -121,4 +147,4 @@ Contributions to Toro are welcome via pull requests. Note, all requests will be 
 
 ## License
 
-ToroPHP was created by [Kunal Anand](http://kunalanand.com) and is released under the MIT License.
+ToroPHP was created by [Kunal Anand](http://kunalanand.com) and released under the MIT License.
