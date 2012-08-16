@@ -44,7 +44,7 @@ Routing with Toro is simple:
 <?php
 
 Toro::serve(Array(
-    "/catalog" => "CatalogHandler",
+    "/" => "SplashHandler",
     "/catalog/page/:number" => "CatalogHandler",
     "/product/:alpha" => "ProductHandler",
     "/manufacturer/:string" => "ManufacturerHandler"
@@ -59,7 +59,7 @@ From the above example, route stubs, such as `:number`, `:string`, and `:alpha` 
 <?php
 
 Toro::serve(Array(
-    "/catalog" => "CatalogHandler",
+    "/" => "SplashHandler",
     "/catalog/page/([0-9]+)" => "CatalogHandler",
     "/product/([a-zA-Z0-9-_]+)" => "ProductHandler",
     "/manufacturer/([a-zA-Z]+)" => "ManufacturerHandler"
