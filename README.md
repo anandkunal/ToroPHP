@@ -14,7 +14,6 @@ Toro is a PHP router for developing RESTful web applications and APIs. Toro is f
 - RESTful routing using strings, regular expressions, and defined types (`number`, `string`, `alpha`)
 - Flexible error handling and callbacks via `ToroHook`
 - Intuitive and self-documented core (`toro.php`)
-- PHPUnit coverage for core classes
 - Tested with PHP 5.3 and above
 
 
@@ -153,7 +152,7 @@ Grab a copy of the repository and move `toro.php` to your htdocs or library dire
 - [Danillo César de O. Melo](https://github.com/danillos/fire_event/blob/master/Event.php) for `ToroHook`
 - [Jason Mooberry](http://jasonmooberry.com) for code optimizations and feedback
 
-Contributions to Toro are welcome via pull requests. Note, all requests will be reviewed carefully. Please try to add test coverage for new feature development.
+Contributions to Toro are welcome via pull requests.
 
 
 ## License
