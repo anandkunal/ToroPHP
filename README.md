@@ -60,7 +60,7 @@ From the above, you can see two emergent patterns.
 
 1. Methods named after the HTTP request method (`GET`, `POST`, `PUT`, `DELETE`) are automatically called.
 
-2. Append `_xhr` to a method to match JSON/`XMLHTTPRequest` requests.
+2. Appending `_xhr` to a handler method automatically matches JSON/`XMLHTTPRequest` requests. If the `_xhr` method is not implemented, then the given HTTP request method is called as a fallback.
 
 
 ## ToroHook (Callbacks)
