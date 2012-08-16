@@ -14,9 +14,9 @@ class Toro {
         }
         else {
             foreach ($routes as $pattern => $handler_name) {
-                $pattern = str_replace(':string', '[a-zA-Z]+', $pattern);
-                $pattern = str_replace(':number', '[0-9]+', $pattern);
-                $pattern = str_replace(':alpha', '[a-zA-Z0-9-_]+', $pattern);
+                $pattern = str_replace(':string', '([a-zA-Z]+)', $pattern);
+                $pattern = str_replace(':number', '([0-9]+)', $pattern);
+                $pattern = str_replace(':alpha', '([a-zA-Z0-9-_]+)', $pattern);
                 if (preg_match('|^/?' . $pattern . '/?$|', $path_info, $matches)) {
                     $discovered_handler = $handler_name;
                     $regex_matches = $matches;
@@ -39,9 +39,14 @@ class Toro {
                 $request_method .= '_xhr';
             }
 
-            ToroHook::fire('before_handler');
-            call_user_func_array(array($handler_instance, $request_method), $regex_matches);
-            ToroHook::fire('after_handler');
+            if (method_exists($handler_instance, $request_method)) {
+                ToroHook::fire('before_handler');
+                call_user_func_array(array($handler_instance, $request_method), $regex_matches);
+                ToroHook::fire('after_handler');
+            }
+            else {
+                ToroHook::fire('404');
+            }
         }
         else {
             ToroHook::fire('404');
@@ -85,10 +90,4 @@ class ToroHook {
     }
 }
 
-class ToroHandler {
-    public function __construct() { }
-
-    public function __call($name, $arguments) {
-        ToroHook::fire('404');
-    }
-}
+class ToroHandler { }
