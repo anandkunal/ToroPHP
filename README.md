@@ -1,6 +1,6 @@
 # Toro
 
-Toro is a PHP router for developing RESTful web applications and APIs. Toro is for minimalists that want to rapidly prototype big ideas while writing beautiful code.
+Toro is a PHP router for developing RESTful web applications and APIs. It is designed for minimalists that want to get work done.
 
 ## Quick Links
 
