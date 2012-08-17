@@ -1,120 +1,160 @@
-# ToroPHP
+# Toro
 
-Toro is a tiny framework for PHP that lets you prototype web applications quickly.
+Toro is a PHP router for developing RESTful web applications and APIs. It is designed for minimalists who want to get work done.
 
-* [Toro Home Page](http://toroweb.org)
+## Quick Links
 
-## The Primordial Application
+- [Official Website](http://toroweb.org)
+- [Changelog](https://github.com/anandkunal/ToroPHP/wiki/Changelog)
+- [Design Goals](https://github.com/anandkunal/ToroPHP/wiki/Design-Goals)
+
+
+## Features
+
+- RESTful routing using strings, regular expressions, and defined types (`number`, `string`, `alpha`)
+- Flexible error handling and callbacks via `ToroHook`
+- Intuitive and self-documented core (`toro.php`)
+- Tested with PHP 5.3 and above
+
+
+## "Hello, world"
 
 The canonical "Hello, world" example:
 
-    require_once 'toro.php';
-    
-    class MainHandler extends ToroHandler {
-        public function get() { 
-            echo 'Hello, world';
-        }
+```php
+<?php
+
+class MainHandler {
+    function get() {
+        echo "Hello, world";
     }
-    
-    $site = new ToroApplication(array(
-        array('/', 'MainHandler')
-    ));
-    
-    $site->serve();
+}
 
-## A Substantial Application
+Toro::serve(array(
+    "/" => "MainHandler",
+));
+```
 
-Here is a slightly more advanced application garnished with pseudocode:
 
-    require_once 'toro.php';
+## Routing Basics
 
-    class BlogHandler extends ToroHandler {
-        public function get() { 
-            echo 'This the front page of the blog. Load all articles.';
-        }
+Routing with Toro is simple:
 
-        public function get_mobile() {
-            // _mobile => fires if iPhone/Android/webOS is detected
-            echo 'Load a subset of the articles.';
-        }
+```php
+<?php
+
+Toro::serve(Array(
+    "/" => "SplashHandler",
+    "/catalog/page/:number" => "CatalogHandler",
+    "/product/:alpha" => "ProductHandler",
+    "/manufacturer/:string" => "ManufacturerHandler"
+));
+```
+
+An application's route table is expressed as an associative array (`route_pattern => handler`). This is closely modeled after [Tornado](http://tornadoweb.org) (Python). Routes are not expressed as anonymous functions to prevent unnecessary code duplication for RESTful dispatching.
+
+From the above example, route stubs, such as `:number`, `:string`, and `:alpha` can be conveniently used instead of common regular expressions. Of course, regular expressions are still welcome. The previous example could also be expressed as:
+
+```php
+<?php
+
+Toro::serve(Array(
+    "/" => "SplashHandler",
+    "/catalog/page/([0-9]+)" => "CatalogHandler",
+    "/product/([a-zA-Z0-9-_]+)" => "ProductHandler",
+    "/manufacturer/([a-zA-Z]+)" => "ManufacturerHandler"
+));
+```
+
+Pattern matches are passed in order as arguments to the handler's request method. In the case of `ProductHandler` above:
+
+```php
+<?php
+
+class ProductHandler {
+    function get($name) {
+        echo "You want to see product: $name";
+    }
+}
+```
+
+
+## RESTful Handlers
+
+```php
+<?php
+
+class ExampleHandler {
+    function get() { }
+    function post() { }
+    function get_xhr() { }
+    function post_xhr() { }
+}
+```
+
+From the above, you can see two emergent patterns.
+
+1. Methods named after the HTTP request method (`GET`, `POST`, `PUT`, `DELETE`) are automatically called.
+
+2. Appending `_xhr` to a handler method automatically matches JSON/`XMLHTTPRequest` requests. If the `_xhr` method is not implemented, then the given HTTP request method is called as a fallback.
+
+
+## ToroHook (Callbacks)
+
+As of v2.0.0, there are a total of five Toro-specific hooks (callbacks):
+
+```php
+<?php
+
+// Fired for 404 errors
+ToroHook::add("404",  function() {});
+
+// Before/After callbacks in order
+ToroHook::add("before_request", function() {});
+ToroHook::add("before_handler", function() {});
+ToroHook::add("after_handler", function() {});
+ToroHook::add("after_request",  function() {});
+```
+
+`before_handler` and `after_handler` are defined within handler's constructor:
+
+```php
+<?php
+
+class SomeHandler {
+    function __construct() {
+        ToroHook::add("before_handler", function() { echo "Before"; });
+        ToroHook::add("after_handler", function() { echo "After"; });
     }
 
-    class ArticleHandler extends ToroHandler {
-        public function get($slug) {
-            echo 'Load an article that matches the slug: ' . $slug;
-        }
+    function get() {
+        echo "I am some handler.";
     }
+}
+```
 
-    class CommentHandler extends ToroHandler {
-        public function post($slug) {
-            echo 'Validate slug - redirect if not found.';
-            echo 'Peek into $_POST, save the comment, and redirect.';
-        }
+Hooks can also be stacked. Adding a hook pushes the provided anonymous function into an array. When a hook is fired, all of the functions are called sequentially.
 
-        public function post_xhr($slug) {
-            // _xhr => fires if XHR request is detected
-            echo 'Validate, save, and return a JSON blob.';
-        }
-    }
-
-    class SyndicationHandler extends ToroHandler {
-        public function get() {
-            echo 'Display some recent entries in RSS/Atom.';
-        }
-    }
-
-    $site = new ToroApplication(array(
-        array('/', 'BlogHandler'),
-        array('article/([a-zA-Z0-9_]+)', 'ArticleHandler'),
-        array('comment/([a-zA-Z0-9_]+)', 'CommentHandler'),
-        array('feed', 'SyndicationHandler')
-    ));
-
-    $site->serve();
-
-
-## Toro Hooks
-
-There are 4 possible hooks (callbacks).
-
-    ToroHook::add('before_request', function() {});
-    ToroHook::add('before_handler', function() {});
-    ToroHook::add('after_handler',  function() {});
-    ToroHook::add('after_request',  function() {});
-
-While you can hook before\_handler and after\_handler anywhere, like index.php, most people will probably want to use it in a handler's constructor:
-
-    class SomeHandler extends ToroHandler {
-        public function __construct() {
-            ToroHook::add('before_handler', function() { echo 'before'; });
-            ToroHook::add('after_handler', function() { echo 'after'; });
-        }
-
-        public function get() {
-            echo 'I am some handler.';
-        }
-    }
-
-Adding a hook pushes the function into an array. When a particular hook is fired, all of the functions are fired in the appropriate order. 
-
-ToroHook was provided by [Danillo César de O. Melo](https://github.com/danillos/fire_event/blob/master/Event.php). ToroHook will be the foundation for the future plugin system.
 
 ## Installation
 
-Grab the source and copy toro.php to your htdocs or lib directory directory.
-
-Couch the following in your Apache configuration or .htaccess:
+Grab a copy of the repository and move `toro.php` to your htdocs or library directory. You may need to add the following snippet in your Apache virtual host configuration or `.htaccess`:
 
     RewriteEngine on
     RewriteCond $1 !^(index\.php)
     RewriteRule ^(.*)$ index.php/$1 [L]
 
-## Roadmap
 
-The immediate plan is to complete the following:
+## Contributions
 
-* Add more example projects.
-* Add more documentation.
-* Setup a mailing list.
+- Toro was inspired by the [Tornado Web Server](http://www.tornadoweb.org) (FriendFeed/Facebook)
+- [Berker Peksag](http://berkerpeksag.com), [Martin Bean](http://www.martinbean.co.uk), [Robbie Coleman](http://robbie.robnrob.com), and [John Kurkowski](http://about.me/john.kurkowski) for bug fixes and patches
+- [Danillo César de O. Melo](https://github.com/danillos/fire_event/blob/master/Event.php) for `ToroHook`
+- [Jason Mooberry](http://jasonmooberry.com) for code optimizations and feedback
 
-Toro is intended to be a minimal framework to help you organize and prototype your next PHP application. One of the project's goals is to make sure the source stays lean.
+Contributions to Toro are welcome via pull requests.
+
+
+## License
+
+ToroPHP was created by [Kunal Anand](http://kunalanand.com) and released under the MIT License.
