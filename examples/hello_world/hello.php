@@ -1,6 +1,6 @@
 <?
 
-require ('toro.php');
+require('toro.php');
 
 class HelloHandler {
     function get() {
