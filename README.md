@@ -24,14 +24,14 @@ The canonical "Hello, world" example:
 ```php
 <?php
 
-class MainHandler {
+class HelloHandler {
     function get() {
         echo "Hello, world";
     }
 }
 
 Toro::serve(array(
-    "/" => "MainHandler",
+    "/" => "HelloHandler",
 ));
 ```
 
