@@ -12,11 +12,14 @@ class Toro {
         if (isset($routes[$path_info])) {
             $discovered_handler = $routes[$path_info];
         }
-        else {
-            foreach ($routes as $pattern => $handler_name) {
-                $pattern = str_replace(':string', '([a-zA-Z]+)', $pattern);
-                $pattern = str_replace(':number', '([0-9]+)', $pattern);
-                $pattern = str_replace(':alpha', '([a-zA-Z0-9-_]+)', $pattern);
+        elseif ($routes) {
+            $tokens = array(
+                ':string' => '([a-zA-Z]+)',
+                ':number' => '([0-9]+)',
+                ':alpha'  => '([a-zA-Z0-9-_]+)'
+            );
+            foreach ($routes as $pattern => $handler_name) {                
+                $pattern = strtr($pattern, $tokens);
                 if (preg_match('#^/?' . $pattern . '/?$#', $path_info, $matches)) {
                     $discovered_handler = $handler_name;
                     $regex_matches = $matches;
