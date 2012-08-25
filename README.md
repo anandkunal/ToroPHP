@@ -141,6 +141,8 @@ Hooks can also be stacked. Adding a hook pushes the provided anonymous function 
 Grab a copy of the repository and move `toro.php` to your htdocs or library directory. You may need to add the following snippet in your Apache virtual host configuration or `.htaccess`:
 
     RewriteEngine on
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond $1 !^(index\.php)
     RewriteRule ^(.*)$ index.php/$1 [L]
 
