@@ -5,7 +5,12 @@ class Toro {
         ToroHook::fire('before_request');
 
         $request_method = strtolower($_SERVER['REQUEST_METHOD']);
-        $path_info = isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : '/';
+        
+        //rebuild URL, then parse for path
+        $scheme = (!empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS'] != 'off')) ? 'https://' : 'http://';
+        $url = $scheme.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
+        $path_info = parse_url($url, PHP_URL_PATH);
+
         $discovered_handler = NULL;
         $regex_matches = array();
 
