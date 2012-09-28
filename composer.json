@@ -20,13 +20,13 @@
             "name": "Danillo César de O. Melo",
             "email": "danillos@gmail.com",
             "homepage": "http://www.danillocesar.com.br/",
-            "role": "Developer"
+            "role": "Contributor"
         },
         {
             "name": "Martin Bean",
             "email": "martin@martinbean.co.uk",
             "homepage": "http://www.martinbean.co.uk",
-            "role": "Contributor"
+            "role": "Developer"
         },
         {
             "name": "Robbie Coleman",
@@ -40,12 +40,12 @@
         {
             "name": "Berker Peksag",
             "homepage": "http://berkerpeksag.com",
-            "role": "Contributor"
+            "role": "Developer"
         },
         {
             "name": "Jason Mooberry",
             "homepage": "http://jasonmooberry.com/",
-            "role": "Contributor"
+            "role": "Developer"
         }
     ],
     "require": {
