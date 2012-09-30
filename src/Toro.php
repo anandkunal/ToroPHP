@@ -1,20 +1,22 @@
 <?php
 
-class Toro {
-    public static function serve($routes) {
+class Toro
+{
+    public static function serve($routes)
+    {
         ToroHook::fire('before_request');
 
         $request_method = strtolower($_SERVER['REQUEST_METHOD']);
         $path_info = '/';
         $path_info = isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : $path_info;
         $path_info = isset($_SERVER['ORIG_PATH_INFO']) ? $_SERVER['ORIG_PATH_INFO'] : $path_info;
-        $discovered_handler = NULL;
+        $discovered_handler = null;
         $regex_matches = array();
 
         if (isset($routes[$path_info])) {
             $discovered_handler = $routes[$path_info];
         }
-        elseif ($routes) {
+        else if ($routes) {
             $tokens = array(
                 ':string' => '([a-zA-Z]+)',
                 ':number' => '([0-9]+)',
@@ -60,25 +62,29 @@ class Toro {
         ToroHook::fire('after_request');
     }
 
-    private static function xhr_request() {
+    private static function xhr_request()
+    {
         return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest';
     }
 }
 
-class ToroHook {
+class ToroHook
+{
     private static $instance;
 
     private $hooks = array();
 
-    private function __construct() { }
-    private function __clone() { }
+    private function __construct() {}
+    private function __clone() {}
 
-    public static function add($hook_name, $fn) {
+    public static function add($hook_name, $fn)
+    {
         $instance = self::get_instance();
         $instance->hooks[$hook_name][] = $fn;
     }
 
-    public static function fire($hook_name, $params = NULL) {
+    public static function fire($hook_name, $params = null)
+    {
         $instance = self::get_instance();
         if (isset($instance->hooks[$hook_name])) {
             foreach ($instance->hooks[$hook_name] as $fn) {
@@ -87,7 +93,8 @@ class ToroHook {
         }
     }
 
-    public static function get_instance() {
+    public static function get_instance()
+    {
         if (empty(self::$instance)) {
             self::$instance = new ToroHook();
         }
