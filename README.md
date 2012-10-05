@@ -144,7 +144,7 @@ Grab a copy of the repository and move `toro.php` to your htdocs or library dire
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond $1 !^(index\.php)
-    RewriteRule ^(.*)$ index.php/$1 [L]
+    RewriteRule ^(.*)$ /index.php/$1 [L]
 
 
 ## Contributions
