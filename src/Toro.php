@@ -21,7 +21,7 @@ class Toro
                 ':number' => '([0-9]+)',
                 ':alpha'  => '([a-zA-Z0-9-_]+)'
             );
-            foreach ($routes as $pattern => $handler_name) {                
+            foreach ($routes as $pattern => $handler_name) {
                 $pattern = strtr($pattern, $tokens);
                 if (preg_match('#^/?' . $pattern . '/?$#', $path_info, $matches)) {
                     $discovered_handler = $handler_name;
