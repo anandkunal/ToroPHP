@@ -8,8 +8,7 @@ class Toro
 
         $request_method = strtolower($_SERVER['REQUEST_METHOD']);
         $path_info = '/';
-        $path_info = isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : $path_info;
-        $path_info = isset($_SERVER['ORIG_PATH_INFO']) ? $_SERVER['ORIG_PATH_INFO'] : $path_info;
+        $path_info = isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : (isset($_SERVER['ORIG_PATH_INFO']) ? $_SERVER['ORIG_PATH_INFO'] : $path_info);
         $discovered_handler = null;
         $regex_matches = array();
 
@@ -22,7 +21,7 @@ class Toro
                 ':number' => '([0-9]+)',
                 ':alpha'  => '([a-zA-Z0-9-_]+)'
             );
-            foreach ($routes as $pattern => $handler_name) {                
+            foreach ($routes as $pattern => $handler_name) {
                 $pattern = strtr($pattern, $tokens);
                 if (preg_match('#^/?' . $pattern . '/?$#', $path_info, $matches)) {
                     $discovered_handler = $handler_name;
