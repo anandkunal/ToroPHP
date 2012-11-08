@@ -106,7 +106,7 @@ As of v2.0.0, there are a total of five Toro-specific hooks (callbacks):
 ```php
 <?php
 
-// Fired for 404 errors
+// Fired for 404 errors; must be defined before Toro::serve() call
 ToroHook::add("404",  function() {});
 
 // Before/After callbacks in order

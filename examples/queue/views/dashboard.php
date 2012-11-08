@@ -7,7 +7,7 @@
 <hr />
 
 <h2>Send</h2>
-<form action="/send" method="post">
+<form action="./send" method="post">
 <textarea name="payload"></textarea><br/>
 <input type="submit" value="Send" />
 </form>
@@ -21,7 +21,7 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 <script type="text/javascript">
 function update() {
-  $.get("/stats", function(b) {
+  $.get("./stats", function(b) {
     $('#size').html(b.size);
     $('#sends').html(b.sends);
     $('#receives').html(b.receives);
@@ -29,7 +29,7 @@ function update() {
 }
 
 function receive() {
-  $.get("/receive", function(a) {
+  $.get("./receive", function(a) {
     $('#payload').html(a.payload);
     update();
   });
