@@ -35,7 +35,7 @@ class Toro
             unset($regex_matches[0]);
             $handler_instance = new $discovered_handler();
 
-            if (self::xhr_request() && method_exists($discovered_handler, $request_method . '_xhr')) {
+            if (self::is_xhr_request() && method_exists($discovered_handler, $request_method . '_xhr')) {
                 header('Content-type: application/json');
                 header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
                 header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
@@ -61,7 +61,7 @@ class Toro
         ToroHook::fire('after_request');
     }
 
-    private static function xhr_request()
+    private static function is_xhr_request()
     {
         return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest';
     }
