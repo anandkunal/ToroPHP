@@ -153,18 +153,44 @@ sequentially.
 
 ## Installation
 
-Grab a copy of the repository and move `toro.php` to your htdocs or library
-directory.
+Grab a copy of the repository and move `Toro.php` to your project root.
+
+### Using Composer
+
+Install composer in your project:
+
+```sh
+$ curl -s https://getcomposer.org/installer | php
+```
+
+Create a `composer.json` file in your project root:
+
+```js
+{
+    "require": {
+        "torophp/torophp": "dev-master"
+    }
+}
+```
+
+Install via composer:
+
+```sh
+$ php composer.phar install
+```
+
+### Server Configuration
 
 You may need to add the following snippet in your Apache HTTP Server virtual
 host configuration or `.htaccess`:
 
-    RewriteEngine on
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond $1 !^(index\.php)
-    RewriteRule ^(.*)$ /index.php/$1 [L]
-
+```apacheconf
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond $1 !^(index\.php)
+RewriteRule ^(.*)$ /index.php/$1 [L]
+```
 
 ## Contributions
 
