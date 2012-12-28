@@ -1,6 +1,7 @@
 # Toro
 
-Toro is a PHP router for developing RESTful web applications and APIs. It is designed for minimalists who want to get work done.
+Toro is a PHP router for developing RESTful web applications and APIs. It is
+designed for minimalists who want to get work done.
 
 ## Quick Links
 
@@ -11,7 +12,8 @@ Toro is a PHP router for developing RESTful web applications and APIs. It is des
 
 ## Features
 
-- RESTful routing using strings, regular expressions, and defined types (`number`, `string`, `alpha`)
+- RESTful routing using strings, regular expressions, and defined types
+  (`number`, `string`, `alpha`)
 - Flexible error handling and callbacks via `ToroHook`
 - Intuitive and self-documented core (`toro.php`)
 - Tested with PHP 5.3 and above
@@ -51,9 +53,16 @@ Toro::serve(array(
 ));
 ```
 
-An application's route table is expressed as an associative array (`route_pattern => handler`). This is closely modeled after [Tornado](http://tornadoweb.org) (Python). Routes are not expressed as anonymous functions to prevent unnecessary code duplication for RESTful dispatching.
+An application's route table is expressed as an associative array
+(`route_pattern => handler`). This is closely modeled after
+[Tornado](http://tornadoweb.org) (Python). Routes are not expressed as
+anonymous functions to prevent unnecessary code duplication for RESTful
+dispatching.
 
-From the above example, route stubs, such as `:number`, `:string`, and `:alpha` can be conveniently used instead of common regular expressions. Of course, regular expressions are still welcome. The previous example could also be expressed as:
+From the above example, route stubs, such as `:number`, `:string`, and
+`:alpha` can be conveniently used instead of common regular expressions.
+Of course, regular expressions are still welcome. The previous example could
+also be expressed as:
 
 ```php
 <?php
@@ -66,7 +75,8 @@ Toro::serve(array(
 ));
 ```
 
-Pattern matches are passed in order as arguments to the handler's request method. In the case of `ProductHandler` above:
+Pattern matches are passed in order as arguments to the handler's request
+method. In the case of `ProductHandler` above:
 
 ```php
 <?php
@@ -94,9 +104,12 @@ class ExampleHandler {
 
 From the above, you can see two emergent patterns.
 
-1. Methods named after the HTTP request method (`GET`, `POST`, `PUT`, `DELETE`) are automatically called.
+1. Methods named after the HTTP request method (`GET`, `POST`, `PUT`,
+   `DELETE`) are automatically called.
 
-2. Appending `_xhr` to a handler method automatically matches JSON/`XMLHTTPRequest` requests. If the `_xhr` method is not implemented, then the given HTTP request method is called as a fallback.
+2. Appending `_xhr` to a handler method automatically matches
+   JSON/`XMLHTTPRequest` requests. If the `_xhr` method is not implemented,
+   then the given HTTP request method is called as a fallback.
 
 
 ## ToroHook (Callbacks)
@@ -133,12 +146,18 @@ class SomeHandler {
 }
 ```
 
-Hooks can also be stacked. Adding a hook pushes the provided anonymous function into an array. When a hook is fired, all of the functions are called sequentially.
+Hooks can also be stacked. Adding a hook pushes the provided anonymous
+function into an array. When a hook is fired, all of the functions are called
+sequentially.
 
 
 ## Installation
 
-Grab a copy of the repository and move `toro.php` to your htdocs or library directory. You may need to add the following snippet in your Apache virtual host configuration or `.htaccess`:
+Grab a copy of the repository and move `toro.php` to your htdocs or library
+directory.
+
+You may need to add the following snippet in your Apache HTTP Server virtual
+host configuration or `.htaccess`:
 
     RewriteEngine on
     RewriteCond %{REQUEST_FILENAME} !-f
@@ -149,8 +168,12 @@ Grab a copy of the repository and move `toro.php` to your htdocs or library dire
 
 ## Contributions
 
-- Toro was inspired by the [Tornado Web Server](http://www.tornadoweb.org) (FriendFeed/Facebook)
-- [Berker Peksag](http://berkerpeksag.com), [Martin Bean](http://www.martinbean.co.uk), [Robbie Coleman](http://robbie.robnrob.com), and [John Kurkowski](http://about.me/john.kurkowski) for bug fixes and patches
+- Toro was inspired by the [Tornado Web Server](http://www.tornadoweb.org)
+  (FriendFeed/Facebook)
+- [Berker Peksag](http://berkerpeksag.com),
+  [Martin Bean](http://www.martinbean.co.uk),
+  [Robbie Coleman](http://robbie.robnrob.com), and
+  [John Kurkowski](http://about.me/john.kurkowski) for bug fixes and patches
 - [Danillo César de O. Melo](https://github.com/danillos/fire_event/blob/master/Event.php) for `ToroHook`
 - [Jason Mooberry](http://jasonmooberry.com) for code optimizations and feedback
 
@@ -159,4 +182,5 @@ Contributions to Toro are welcome via pull requests.
 
 ## License
 
-ToroPHP was created by [Kunal Anand](http://kunalanand.com) and released under the MIT License.
+ToroPHP was created by [Kunal Anand](http://kunalanand.com) and released under
+the MIT License.
