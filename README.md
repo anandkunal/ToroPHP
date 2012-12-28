@@ -15,7 +15,7 @@ designed for minimalists who want to get work done.
 - RESTful routing using strings, regular expressions, and defined types
   (`number`, `string`, `alpha`)
 - Flexible error handling and callbacks via `ToroHook`
-- Intuitive and self-documented core (`toro.php`)
+- Intuitive and self-documented core (`Toro.php`)
 - Tested with PHP 5.3 and above
 
 
