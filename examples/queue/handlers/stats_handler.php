@@ -1,6 +1,6 @@
 <?php
 class StatsHandler {
-    function get_xhr() {
-        echo json_encode(get_stats());
-    }
+		function get_xhr() {
+				echo json_encode(get_stats());
+		}
 }

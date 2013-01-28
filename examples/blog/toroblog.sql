@@ -1,11 +1,11 @@
 CREATE TABLE `articles` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `title` varchar(25) NOT NULL DEFAULT '',
-  `slug` varchar(25) NOT NULL,
-  `body` text NOT NULL,
-  `published` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `slug` (`slug`)
+	`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+	`title` varchar(25) NOT NULL DEFAULT '',
+	`slug` varchar(25) NOT NULL,
+	`body` text NOT NULL,
+	`published` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	PRIMARY KEY (`id`),
+	UNIQUE KEY `slug` (`slug`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `articles` (`id`, `title`, `slug`, `body`, `published`)
@@ -16,12 +16,12 @@ VALUES
 DROP TABLE IF EXISTS `comments`;
 
 CREATE TABLE `comments` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `article_id` int(11) NOT NULL,
-  `name` varchar(25) NOT NULL DEFAULT '',
-  `body` text NOT NULL,
-  `posted` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
+	`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+	`article_id` int(11) NOT NULL,
+	`name` varchar(25) NOT NULL DEFAULT '',
+	`body` text NOT NULL,
+	`posted` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `comments` (`id`, `article_id`, `name`, `body`, `posted`)
