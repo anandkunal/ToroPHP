@@ -1,7 +1,7 @@
 <?php
 class DashboardHandler {
-    function get() {
-        $stats = get_stats();
-        include("views/dashboard.php");
-    }
+		function get() {
+				$stats = get_stats();
+				include("views/dashboard.php");
+		}
 }

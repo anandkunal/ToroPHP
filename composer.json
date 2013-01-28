@@ -1,59 +1,59 @@
 {
-    "name": "torophp/torophp",
-    "type": "library",
-    "description": "Toro is a PHP router for developing RESTful web applications and APIs.",
-    "keywords": [
-        "framework",
-        "php",
-        "router"
-    ],
-    "homepage": "http://github.com/anandkunal/ToroPHP",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Kunal Anand",
-            "email": "kunal.r.anand@gmail.com",
-            "homepage": "http://kunalanand.com/",
-            "role": "Developer"
-        },
-        {
-            "name": "Danillo César de O. Melo",
-            "email": "danillos@gmail.com",
-            "homepage": "http://www.danillocesar.com.br/",
-            "role": "Contributor"
-        },
-        {
-            "name": "Martin Bean",
-            "email": "martin@martinbean.co.uk",
-            "homepage": "http://www.martinbean.co.uk",
-            "role": "Developer"
-        },
-        {
-            "name": "Robbie Coleman",
-            "homepage": "http://robbie.robnrob.com",
-            "role": "Contributor"
-        },
-        {
-            "name": "John Kurkowski",
-            "role": "Contributor"
-        },
-        {
-            "name": "Berker Peksag",
-            "homepage": "http://berkerpeksag.com",
-            "role": "Developer"
-        },
-        {
-            "name": "Jason Mooberry",
-            "homepage": "http://jasonmooberry.com/",
-            "role": "Developer"
-        }
-    ],
-    "require": {
-        "php": ">=5.3.0"
-    },
-    "autoload": {
-        "files": [
-            "src/Toro.php"
-        ]
-    }
+		"name": "torophp/torophp",
+		"type": "library",
+		"description": "Toro is a PHP router for developing RESTful web applications and APIs.",
+		"keywords": [
+				"framework",
+				"php",
+				"router"
+		],
+		"homepage": "http://github.com/anandkunal/ToroPHP",
+		"license": "MIT",
+		"authors": [
+				{
+						"name": "Kunal Anand",
+						"email": "kunal.r.anand@gmail.com",
+						"homepage": "http://kunalanand.com/",
+						"role": "Developer"
+				},
+				{
+						"name": "Danillo César de O. Melo",
+						"email": "danillos@gmail.com",
+						"homepage": "http://www.danillocesar.com.br/",
+						"role": "Contributor"
+				},
+				{
+						"name": "Martin Bean",
+						"email": "martin@martinbean.co.uk",
+						"homepage": "http://www.martinbean.co.uk",
+						"role": "Developer"
+				},
+				{
+						"name": "Robbie Coleman",
+						"homepage": "http://robbie.robnrob.com",
+						"role": "Contributor"
+				},
+				{
+						"name": "John Kurkowski",
+						"role": "Contributor"
+				},
+				{
+						"name": "Berker Peksag",
+						"homepage": "http://berkerpeksag.com",
+						"role": "Developer"
+				},
+				{
+						"name": "Jason Mooberry",
+						"homepage": "http://jasonmooberry.com/",
+						"role": "Developer"
+				}
+		],
+		"require": {
+				"php": ">=5.3.0"
+		},
+		"autoload": {
+				"files": [
+						"src/Toro.php"
+				]
+		}
 }

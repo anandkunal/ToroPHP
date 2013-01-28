@@ -13,7 +13,7 @@ designed for minimalists who want to get work done.
 ## Features
 
 - RESTful routing using strings, regular expressions, and defined types
-  (`number`, `string`, `alpha`)
+	(`number`, `string`, `alpha`)
 - Flexible error handling and callbacks via `ToroHook`
 - Intuitive and self-documented core (`Toro.php`)
 - Tested with PHP 5.3 and above
@@ -27,13 +27,13 @@ The canonical "Hello, world" example:
 <?php
 
 class HelloHandler {
-    function get() {
-        echo "Hello, world";
-    }
+		function get() {
+				echo "Hello, world";
+		}
 }
 
 Toro::serve(array(
-    "/" => "HelloHandler",
+		"/" => "HelloHandler",
 ));
 ```
 
@@ -46,10 +46,10 @@ Routing with Toro is simple:
 <?php
 
 Toro::serve(array(
-    "/" => "SplashHandler",
-    "/catalog/page/:number" => "CatalogHandler",
-    "/product/:alpha" => "ProductHandler",
-    "/manufacturer/:string" => "ManufacturerHandler"
+		"/" => "SplashHandler",
+		"/catalog/page/:number" => "CatalogHandler",
+		"/product/:alpha" => "ProductHandler",
+		"/manufacturer/:string" => "ManufacturerHandler"
 ));
 ```
 
@@ -68,10 +68,10 @@ also be expressed as:
 <?php
 
 Toro::serve(array(
-    "/" => "SplashHandler",
-    "/catalog/page/([0-9]+)" => "CatalogHandler",
-    "/product/([a-zA-Z0-9-_]+)" => "ProductHandler",
-    "/manufacturer/([a-zA-Z]+)" => "ManufacturerHandler"
+		"/" => "SplashHandler",
+		"/catalog/page/([0-9]+)" => "CatalogHandler",
+		"/product/([a-zA-Z0-9-_]+)" => "ProductHandler",
+		"/manufacturer/([a-zA-Z]+)" => "ManufacturerHandler"
 ));
 ```
 
@@ -82,9 +82,9 @@ method. In the case of `ProductHandler` above:
 <?php
 
 class ProductHandler {
-    function get($name) {
-        echo "You want to see product: $name";
-    }
+		function get($name) {
+				echo "You want to see product: $name";
+		}
 }
 ```
 
@@ -95,21 +95,21 @@ class ProductHandler {
 <?php
 
 class ExampleHandler {
-    function get() {}
-    function post() {}
-    function get_xhr() {}
-    function post_xhr() {}
+		function get() {}
+		function post() {}
+		function get_xhr() {}
+		function post_xhr() {}
 }
 ```
 
 From the above, you can see two emergent patterns.
 
 1. Methods named after the HTTP request method (`GET`, `POST`, `PUT`,
-   `DELETE`) are automatically called.
+	 `DELETE`) are automatically called.
 
 2. Appending `_xhr` to a handler method automatically matches
-   JSON/`XMLHTTPRequest` requests. If the `_xhr` method is not implemented,
-   then the given HTTP request method is called as a fallback.
+	 JSON/`XMLHTTPRequest` requests. If the `_xhr` method is not implemented,
+	 then the given HTTP request method is called as a fallback.
 
 
 ## ToroHook (Callbacks)
@@ -120,13 +120,13 @@ As of v2.0.0, there are a total of five Toro-specific hooks (callbacks):
 <?php
 
 // Fired for 404 errors; must be defined before Toro::serve() call
-ToroHook::add("404",  function() {});
+ToroHook::add("404",	function() {});
 
 // Before/After callbacks in order
 ToroHook::add("before_request", function() {});
 ToroHook::add("before_handler", function() {});
 ToroHook::add("after_handler", function() {});
-ToroHook::add("after_request",  function() {});
+ToroHook::add("after_request",	function() {});
 ```
 
 `before_handler` and `after_handler` are defined within handler's constructor:
@@ -135,14 +135,14 @@ ToroHook::add("after_request",  function() {});
 <?php
 
 class SomeHandler {
-    function __construct() {
-        ToroHook::add("before_handler", function() { echo "Before"; });
-        ToroHook::add("after_handler", function() { echo "After"; });
-    }
+		function __construct() {
+				ToroHook::add("before_handler", function() { echo "Before"; });
+				ToroHook::add("after_handler", function() { echo "After"; });
+		}
 
-    function get() {
-        echo "I am some handler.";
-    }
+		function get() {
+				echo "I am some handler.";
+		}
 }
 ```
 
@@ -167,9 +167,9 @@ Create a `composer.json` file in your project root:
 
 ```js
 {
-    "require": {
-        "torophp/torophp": "dev-master"
-    }
+		"require": {
+				"torophp/torophp": "dev-master"
+		}
 }
 ```
 
@@ -195,11 +195,11 @@ RewriteRule ^(.*)$ /index.php/$1 [L]
 ## Contributions
 
 - Toro was inspired by the [Tornado Web Server](http://www.tornadoweb.org)
-  (FriendFeed/Facebook)
+	(FriendFeed/Facebook)
 - [Berker Peksag](http://berkerpeksag.com),
-  [Martin Bean](http://www.martinbean.co.uk),
-  [Robbie Coleman](http://robbie.robnrob.com), and
-  [John Kurkowski](http://about.me/john.kurkowski) for bug fixes and patches
+	[Martin Bean](http://www.martinbean.co.uk),
+	[Robbie Coleman](http://robbie.robnrob.com), and
+	[John Kurkowski](http://about.me/john.kurkowski) for bug fixes and patches
 - [Danillo César de O. Melo](https://github.com/danillos/fire_event/blob/master/Event.php) for `ToroHook`
 - [Jason Mooberry](http://jasonmooberry.com) for code optimizations and feedback
 

@@ -26,9 +26,9 @@
 DROP TABLE IF EXISTS `operations`;
 
 CREATE TABLE `operations` (
-  `type` varchar(25) DEFAULT NULL,
-  `count` int(11) NOT NULL,
-  UNIQUE KEY `type` (`type`)
+	`type` varchar(25) DEFAULT NULL,
+	`count` int(11) NOT NULL,
+	UNIQUE KEY `type` (`type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 LOCK TABLES `operations` WRITE;
@@ -49,9 +49,9 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `queue`;
 
 CREATE TABLE `queue` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `payload` text NOT NULL,
-  PRIMARY KEY (`id`)
+	`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+	`payload` text NOT NULL,
+	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 

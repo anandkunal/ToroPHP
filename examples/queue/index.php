@@ -8,12 +8,12 @@ require("lib/queries.php");
 require("../../src/Toro.php");
 
 ToroHook::add("404", function() {
-    echo "Not found";
+		echo "Not found";
 });
 
 Toro::serve(array(
-    "/" => "DashboardHandler",
-    "/send" => "SendHandler",
-    "/receive" => "ReceiveHandler",
-    "/stats" => "StatsHandler"
+		"/" => "DashboardHandler",
+		"/send" => "SendHandler",
+		"/receive" => "ReceiveHandler",
+		"/stats" => "StatsHandler"
 ));
