@@ -1,4 +1,5 @@
-<?
+<?php
+
 class MySQL {
   private static $instance = NULL;
 

@@ -1,4 +1,5 @@
-<?
+<?php
+
 class CommentHandler {
     function post($slug) {
         $article = get_article_by_slug($slug);

@@ -1,4 +1,5 @@
-<?
+<?php
+
 class ArticleHandler {
     function get($slug) {
         $article = get_article_by_slug($slug);
