@@ -1,4 +1,5 @@
 <?php
+
 function get_queue_size() {
     $query = MySQL::getInstance()->query("SELECT count(id) as count FROM queue");
     $result = $query->fetch(PDO::FETCH_ASSOC);
