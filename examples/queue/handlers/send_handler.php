@@ -1,4 +1,5 @@
 <?php
+
 class SendHandler {
     function post() {
         if (isset($_POST['payload']) && strlen(trim($_POST['payload'])) > 0) {

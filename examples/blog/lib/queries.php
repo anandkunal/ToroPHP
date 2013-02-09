@@ -1,4 +1,5 @@
-<?
+<?php
+
 function get_articles() {
     $query = MySQL::getInstance()->query("SELECT * FROM articles ORDER BY published DESC");
     return $query->fetchAll();

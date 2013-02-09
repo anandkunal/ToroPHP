@@ -1,4 +1,5 @@
-<?
+<?php
+
 class ArticlesHandler {
     function get() {
         $articles = get_articles();

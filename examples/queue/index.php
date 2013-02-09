@@ -1,4 +1,5 @@
 <?php
+
 require("handlers/dashboard_handler.php");
 require("handlers/receive_handler.php");
 require("handlers/send_handler.php");

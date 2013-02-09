@@ -1,4 +1,5 @@
-<?
+<?php
+
 require("handlers/article_handler.php");
 require("handlers/articles_handler.php");
 require("handlers/comment_handler.php");
