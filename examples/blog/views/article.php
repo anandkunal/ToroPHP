@@ -1,5 +1,5 @@
 <h1>Blog</h1>
-<? include("_article.php"); ?>
+<?php include("_article.php"); ?>
 
 <h3>Comments (<?php echo count($comments); ?>)</h3>
 <?php
