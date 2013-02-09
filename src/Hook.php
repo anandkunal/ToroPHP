@@ -15,7 +15,7 @@ namespace Toro;
  * Event handler for Toro router
  * 
  */
-class ToroHook
+class Hook
 {
     private static $instance;
 
@@ -43,7 +43,7 @@ class ToroHook
     public static function get_instance()
     {
         if (empty(self::$instance)) {
-            self::$instance = new ToroHook();
+            self::$instance = new Hook();
         }
         return self::$instance;
     }
