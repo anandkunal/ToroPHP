@@ -1,3 +1,3 @@
-<strong><?= $comment['name']; ?></strong> commented:
-<div><?= Markdown($comment['body']); ?></div>
+<strong><?php echo $comment['name']; ?></strong> commented:
+<div><?php echo Markdown($comment['body']); ?></div>
 <hr />

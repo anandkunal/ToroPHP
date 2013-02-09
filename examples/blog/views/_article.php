@@ -1,3 +1,3 @@
-<h2><a href="/article/<?= $article['slug']; ?>"><?= $article['title']; ?></a></h2>
-<div><?= Markdown($article['body']); ?></div>
+<h2><a href="/article/<?php echo $article['slug']; ?>"><?php echo $article['title']; ?></a></h2>
+<div><?php echo Markdown($article['body']); ?></div>
 <hr />
