@@ -191,6 +191,26 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond $1 !^(index\.php)
 RewriteRule ^(.*)$ /index.php/$1 [L]
 ```
+And for IIS you will need to add the following rule to your `web.config`:
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <system.webServer>
+        <rewrite>
+            <rules>
+                <rule name="Toro" stopProcessing="true">
+                    <match url="^(.*)$" />
+                    <conditions logicalGrouping="MatchAll">
+                        <add input="{REQUEST_FILENAME}" matchType="IsFile" negate="true" />
+                        <add input="{REQUEST_FILENAME}" matchType="IsDirectory" negate="true" />
+                    </conditions>
+                    <action type="Rewrite" url="index.php/{R:1}" />
+                </rule>
+            </rules>
+        </rewrite>
+    </system.webServer>
+</configuration>
+```
 
 ## Contributions
 
