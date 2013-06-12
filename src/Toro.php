@@ -2,8 +2,30 @@
 
 class Toro
 {
+
+    // used in ToroUtil::url_for to resolve handlers urls
+    private static $_routes;
+
+    // and the method to return the routes
+    public static function getRoutes()
+    {
+        return self::$_routes;
+    }
+
+    // route convenience tokens
+    public static function getTokens()
+    {
+        return array(
+            ':string' => '([a-zA-Z]+)',
+            ':number' => '([0-9]+)',
+            ':alpha'  => '([a-zA-Z0-9-_]+)'
+        );  
+    }
+
     public static function serve($routes)
     {
+        self::$_routes = $routes;
+
         ToroHook::fire('before_request');
 
         $request_method = strtolower($_SERVER['REQUEST_METHOD']);
@@ -16,11 +38,8 @@ class Toro
             $discovered_handler = $routes[$path_info];
         }
         else if ($routes) {
-            $tokens = array(
-                ':string' => '([a-zA-Z]+)',
-                ':number' => '([0-9]+)',
-                ':alpha'  => '([a-zA-Z0-9-_]+)'
-            );
+            $tokens = self::getTokens();
+
             foreach ($routes as $pattern => $handler_name) {
                 $pattern = strtr($pattern, $tokens);
                 if (preg_match('#^/?' . $pattern . '/?$#', $path_info, $matches)) {
@@ -98,5 +117,71 @@ class ToroHook
             self::$instance = new ToroHook();
         }
         return self::$instance;
+    }
+}
+
+class ToroUtil
+{
+    /* 
+     * Tries to return the url for a handler if the handler exists.
+     * If the route of this handler was defined using parameters
+     * then an array with the parameters in the same order is expected.
+     *
+     * example:
+     *
+     * Toro::serve(array(
+     *     "/" => "IndexHandler",
+     *     "/hello/:alpha" => "HelloHandler",
+     *     "/test/this" => "TestHandler",
+     * ));
+     * 
+     * ToroUtil::url_for("IndexHandler") would return "/"
+     * ToroUtil::url_for("HelloHandler", array("test")) would return "/hello/test"
+     *
+     * but
+     *
+     * ToroUtil::url_for("HelloHandler") will not return because it's missing the
+     * :alpha parameter
+     * 
+     * and
+     *
+     * ToroUtil::url_for("TestHandler") would return "/test/this"
+     *
+     * This is because routes can change so it is better
+     * to define them only in one place (DRY) 
+     *
+     */
+
+    public static function url_for($handler, $params = array())
+    {
+        $tokens = Toro::getTokens();
+        $routes = Toro::getRoutes();
+
+        foreach ($routes as $pattern => $handler_name) 
+        {
+            if ($handler_name == $handler)
+            {
+
+                /* convert the tokens like :string to regex like ([a-zA-Z]+) */
+                $pattern = strtr($pattern, $tokens);
+                /* find all the regex parameters in the route pattern */
+                preg_match('/\(.*\)/', $pattern, $regs);
+                /* 
+                 * replace all the regex parameters with the parameters received
+                 * to construct the url
+                 */
+                $url = str_replace($regs, $params, $pattern);
+                /* 
+                 * test that the route pattern matches the resulting url
+                 * to validate that the correct number and type of parameters
+                 * were received
+                 */
+                
+                if (preg_match('#^/?' . $pattern . '/?$#', $url))
+                {
+                    return $url; 
+                }
+            }
+        }
     }
 }
