@@ -46,7 +46,7 @@ class Toro
             $tmp = $discovered_handler;
             reset($tmp);
             $discovered_handler = key($tmp);
-            $request_method = $tmp[$discovered_handler];
+            $request_method = $tmp[$discovered_handler]."_".$request_method;
         }
 
         if ($discovered_handler && class_exists($discovered_handler)) {
