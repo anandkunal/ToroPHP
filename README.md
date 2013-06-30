@@ -101,7 +101,6 @@ class ExampleHandler {
     function post_xhr() {}
 }
 ```
-
 From the above, you can see two emergent patterns.
 
 1. Methods named after the HTTP request method (`GET`, `POST`, `PUT`,
@@ -111,6 +110,35 @@ From the above, you can see two emergent patterns.
    JSON/`XMLHTTPRequest` requests. If the `_xhr` method is not implemented,
    then the given HTTP request method is called as a fallback.
 
+## Specify Actions
+Some actions could be kept within the scope of the handler by specifying the action.  This will still follow the pattern of the request pattern, but prefixed with a specified action.
+
+```php
+<?php
+class BeerHandler {
+  function get() {
+		echo "All the Beers are belong to me.";
+	}
+
+	function action_get($num){
+		echo "I got my beer with id ".$num;
+	}
+
+	function action_post($num){
+		echo "Posted my beer with id ".$num;
+	}
+
+	function comment_post($num){
+		echo "Posted by beer by comment with id ".$num;
+	}
+}
+
+Toro::serve(array(
+    "/beers" => "BeerHandler",
+    "/beers/:number" => array("BeerHandler"=>"action"),
+    "/beers/:number/comment" => array("BeerHandler"=>"comment")
+));
+```
 
 ## ToroHook (Callbacks)
 

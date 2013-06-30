@@ -19,7 +19,7 @@ class Toro
                 $path_info = (strpos($_SERVER['REQUEST_URI'], '?') > 0) ? strstr($_SERVER['REQUEST_URI'], '?', true) : $_SERVER['REQUEST_URI'];
             }
         }
-        
+
         $discovered_handler = null;
         $regex_matches = array();
 
@@ -40,6 +40,13 @@ class Toro
                     break;
                 }
             }
+        }
+
+        if(is_array($discovered_handler)){
+            $tmp = $discovered_handler;
+            reset($tmp);
+            $discovered_handler = key($tmp);
+            $request_method = $tmp[$discovered_handler]."_".$request_method;
         }
 
         if ($discovered_handler && class_exists($discovered_handler)) {
