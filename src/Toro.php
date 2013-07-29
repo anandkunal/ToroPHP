@@ -2,7 +2,7 @@
 
 class Toro
 {
-    public static function serve($routes, $route_prefix = '')
+    public static function serve($routes, $route_prefix = '', $route_case_sensitive = true)
     {
         ToroHook::fire('before_request');
 		
@@ -28,6 +28,7 @@ class Toro
         else {
             if (!empty($_SERVER['REQUEST_URI'])) {
                 $path_info = (strpos($_SERVER['REQUEST_URI'], '?') > 0) ? strstr($_SERVER['REQUEST_URI'], '?', true) : $_SERVER['REQUEST_URI'];
+                $path_info = $route_case_sensitive ? $path_info : strtolower($path_info); //Make path lowercase if configured that way
             }
         }
         
