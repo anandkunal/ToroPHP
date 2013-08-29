@@ -43,9 +43,19 @@ class Toro
         }
 
         $result = null;
-        if ($discovered_handler && class_exists($discovered_handler)) {
+
+        $handler_instance = null;
+        if ($discovered_handler) {
+            if (gettype($discovered_handler) === 'string' && class_exists($discovered_handler)) {
+                $handler_instance = new $discovered_handler();
+            }
+            elseif ($discovered_handler instanceof Closure) {
+                $handler_instance = $discovered_handler();
+            }
+        }
+
+        if ($handler_instance) {
             unset($regex_matches[0]);
-            $handler_instance = new $discovered_handler();
 
             if (self::is_xhr_request() && method_exists($discovered_handler, $request_method . '_xhr')) {
                 header('Content-type: application/json');
