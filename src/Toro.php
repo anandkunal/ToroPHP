@@ -57,7 +57,7 @@ class Toro
         if ($handler_instance) {
             unset($regex_matches[0]);
 
-            if (self::is_xhr_request() && method_exists($discovered_handler, $request_method . '_xhr')) {
+            if (self::is_xhr_request() && method_exists($handler_instance, $request_method . '_xhr')) {
                 header('Content-type: application/json');
                 header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
                 header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
