@@ -88,18 +88,24 @@ class ToroHook
     private function __construct() {}
     private function __clone() {}
 
-    public static function add($hook_name, $fn)
+    public static function add($hook_name, $fn, $priority = 1)
     {
         $instance = self::get_instance();
-        $instance->hooks[$hook_name][] = $fn;
+        $instance->hooks[$hook_name][] = array('data' => $fn, 'priority' => (int) $priority);
     }
 
     public static function fire($hook_name, $params = null)
     {
         $instance = self::get_instance();
         if (isset($instance->hooks[$hook_name])) {
-            foreach ($instance->hooks[$hook_name] as $fn) {
-                call_user_func_array($fn, array(&$params));
+            uksort($instance->hooks[$hook_name], function ($a, $b) use($instance, $hook_name) { 
+                if ($instance->hooks[$hook_name][$a]['priority'] == $instance->hooks[$hook_name][$b]['priority']) {
+                    return ($a>$b)?1:-1;
+                }
+                return $instance->hooks[$hook_name][$a]['priority'] < $instance->hooks[$hook_name][$b]['priority']?1:-1;
+            });
+            foreach ($instance->hooks[$hook_name] as $hook) {
+                call_user_func_array($hook['data'], array(&$params));
             }
         }
     }
