@@ -46,10 +46,10 @@ class Toro
 
         $handler_instance = null;
         if ($discovered_handler) {
-            if (gettype($discovered_handler) === 'string' && class_exists($discovered_handler)) {
+            if (is_string($discovered_handler)) {
                 $handler_instance = new $discovered_handler();
             }
-            elseif ($discovered_handler instanceof Closure) {
+            elseif (is_callable($discovered_handler)) {
                 $handler_instance = $discovered_handler();
             }
         }
