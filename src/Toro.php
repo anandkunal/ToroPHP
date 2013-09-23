@@ -6,9 +6,9 @@ class Toro
     private static $used_routes;
     private static $used_tokens;
 
-    public static function hashandlerfor($route)
+    public static function hashandlerfor($path_info)
     {
-	if (isset(self::$used_routes[$route]))
+	if (isset(self::$used_routes[$path_info]))
 		return true;
 	foreach (self::$used_routes as $pattern => $handler_name) {
 		$pattern = strtr($pattern, self::$used_tokens);
