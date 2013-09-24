@@ -2,8 +2,35 @@
 
 class Toro
 {
+
+    private static $used_routes;
+    private static $used_tokens;
+
+    public static function hasHandlerFor($path_info)
+    {
+        if (isset(self::$used_routes[$path_info])) {
+            return true;
+        }
+        
+        foreach (self::$used_routes as $pattern => $handler_name) {
+            $pattern = strtr($pattern, self::$used_tokens);
+            if (preg_match('#^/?' . $pattern . '/?$#', $path_info, $matches)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static function serve($routes)
     {
+        self::$used_routes = $routes;
+        self::$used_tokens = array(
+            ':string' => '([a-zA-Z]+)',
+            ':number' => '([0-9]+)',
+            ':alpha'  => '([a-zA-Z0-9-_]+)'
+        );
+        foreach ($extratokens as $key => $value) self::$used_tokens[$key]="($value)";
+
         ToroHook::fire('before_request', compact('routes'));
 
         $request_method = strtolower($_SERVER['REQUEST_METHOD']);
@@ -33,7 +60,7 @@ class Toro
                 ':alpha'  => '([a-zA-Z0-9-_]+)'
             );
             foreach ($routes as $pattern => $handler_name) {
-                $pattern = strtr($pattern, $tokens);
+                $pattern = strtr($pattern, self::$used_tokens);
                 if (preg_match('#^/?' . $pattern . '/?$#', $path_info, $matches)) {
                     $discovered_handler = $handler_name;
                     $regex_matches = $matches;
