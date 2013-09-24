@@ -8,9 +8,11 @@ class Toro
 
     public static function hasHandlerFor($path_info)
     {
-        if (isset(self::$used_routes[$path_info]))
+        if (isset(self::$used_routes[$path_info])) {
             return true;
-            foreach (self::$used_routes as $pattern => $handler_name) {
+        }
+        
+        foreach (self::$used_routes as $pattern => $handler_name) {
             $pattern = strtr($pattern, self::$used_tokens);
             if (preg_match('#^/?' . $pattern . '/?$#', $path_info, $matches)) {
                 return true;
