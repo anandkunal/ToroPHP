@@ -21,7 +21,7 @@ class Toro
         return false;
     }
 
-    public static function serve($routes)
+    public static function serve($routes, $extratokens = null)
     {
         self::$used_routes = $routes;
         self::$used_tokens = array(
