@@ -2,35 +2,8 @@
 
 class Toro
 {
-
-    private static $used_routes;
-    private static $used_tokens;
-
-    public static function hasHandlerFor($path_info)
+    public static function serve($routes)
     {
-        if (isset(self::$used_routes[$path_info])) {
-            return true;
-        }
-        
-        foreach (self::$used_routes as $pattern => $handler_name) {
-            $pattern = strtr($pattern, self::$used_tokens);
-            if (preg_match('#^/?' . $pattern . '/?$#', $path_info, $matches)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public static function serve($routes, $extratokens = null)
-    {
-        self::$used_routes = $routes;
-        self::$used_tokens = array(
-            ':string' => '([a-zA-Z]+)',
-            ':number' => '([0-9]+)',
-            ':alpha'  => '([a-zA-Z0-9-_]+)'
-        );
-        foreach ($extratokens as $key => $value) self::$used_tokens[$key]="($value)";
-
         ToroHook::fire('before_request', compact('routes'));
 
         $request_method = strtolower($_SERVER['REQUEST_METHOD']);
@@ -60,7 +33,7 @@ class Toro
                 ':alpha'  => '([a-zA-Z0-9-_]+)'
             );
             foreach ($routes as $pattern => $handler_name) {
-                $pattern = strtr($pattern, self::$used_tokens);
+                $pattern = strtr($pattern, $tokens);
                 if (preg_match('#^/?' . $pattern . '/?$#', $path_info, $matches)) {
                     $discovered_handler = $handler_name;
                     $regex_matches = $matches;
@@ -115,24 +88,18 @@ class ToroHook
     private function __construct() {}
     private function __clone() {}
 
-    public static function add($hook_name, $fn, $priority = 1)
+    public static function add($hook_name, $fn)
     {
         $instance = self::get_instance();
-        $instance->hooks[$hook_name][] = array('data' => $fn, 'priority' => (int) $priority);
+        $instance->hooks[$hook_name][] = $fn;
     }
 
     public static function fire($hook_name, $params = null)
     {
         $instance = self::get_instance();
         if (isset($instance->hooks[$hook_name])) {
-            uksort($instance->hooks[$hook_name], function ($a, $b) use($instance, $hook_name) { 
-                if ($instance->hooks[$hook_name][$a]['priority'] == $instance->hooks[$hook_name][$b]['priority']) {
-                    return ($a>$b)?1:-1;
-                }
-                return $instance->hooks[$hook_name][$a]['priority'] < $instance->hooks[$hook_name][$b]['priority']?1:-1;
-            });
-            foreach ($instance->hooks[$hook_name] as $hook) {
-                call_user_func_array($hook['data'], array(&$params));
+            foreach ($instance->hooks[$hook_name] as $fn) {
+                call_user_func_array($fn, array(&$params));
             }
         }
     }
