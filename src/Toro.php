@@ -43,11 +43,21 @@ class Toro
         }
 
         $result = null;
-        if ($discovered_handler && class_exists($discovered_handler)) {
-            unset($regex_matches[0]);
-            $handler_instance = new $discovered_handler();
 
-            if (self::is_xhr_request() && method_exists($discovered_handler, $request_method . '_xhr')) {
+        $handler_instance = null;
+        if ($discovered_handler) {
+            if (is_string($discovered_handler)) {
+                $handler_instance = new $discovered_handler();
+            }
+            elseif (is_callable($discovered_handler)) {
+                $handler_instance = $discovered_handler();
+            }
+        }
+
+        if ($handler_instance) {
+            unset($regex_matches[0]);
+
+            if (self::is_xhr_request() && method_exists($handler_instance, $request_method . '_xhr')) {
                 header('Content-type: application/json');
                 header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
                 header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
