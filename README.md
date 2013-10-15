@@ -115,7 +115,9 @@ From the above, you can see two emergent patterns.
    (or even javascript) but want to implement other `verbs` such as `PUT` or `DELETE` then add a hidden input
    to your form with the name `_method` set to your desired verb, e.g.
    
-    <input type="hidden" name="_method" value="put" />
+```php
+<input type="hidden" name="_method" value="put" />
+```
 
 ## ToroHook (Callbacks)
 
