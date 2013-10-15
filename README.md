@@ -111,6 +111,11 @@ From the above, you can see two emergent patterns.
    JSON/`XMLHTTPRequest` requests. If the `_xhr` method is not implemented,
    then the given HTTP request method is called as a fallback.
 
+3. If you want to add fallback support for browsers that do not support XMLHTTPRequest, 
+   (or even javascript) but want to implement other `verbs` such as `PUT` or `DELETE` then add a hidden input
+   to your form with the name `_method` set to your desired verb, e.g.
+   
+    <input type="hidden" name="_method" value="put" />
 
 ## ToroHook (Callbacks)
 
