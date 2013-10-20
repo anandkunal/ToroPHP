@@ -15,8 +15,19 @@ class Toro
             $path_info = $_SERVER['ORIG_PATH_INFO'];
         }
         else {
-            if (!empty($_SERVER['REQUEST_URI'])) {
-                $path_info = (strpos($_SERVER['REQUEST_URI'], '?') > 0) ? strstr($_SERVER['REQUEST_URI'], '?', true) : $_SERVER['REQUEST_URI'];
+            if (!empty($_SERVER['REQUEST_URI']) && !empty($_SERVER['SCRIPT_NAME'])) {
+                $uri = $_SERVER['REQUEST_URI'];
+               
+                if (strpos($uri, '?') > 0) {
+                  $path_info = strstr($_SERVER['REQUEST_URI'], '?', true);
+                }
+
+                if (strpos($uri, $_SERVER['SCRIPT_NAME']) === 0) {
+                  $path_info = substr($uri, strlen($_SERVER['SCRIPT_NAME']));
+                }
+                elseif (strpos($uri, dirname($_SERVER['SCRIPT_NAME'])) === 0) {
+                  $path_info = substr($uri, strlen(dirname($_SERVER['SCRIPT_NAME'])));
+                }
             }
         }
         
