@@ -85,7 +85,7 @@ class Toro
 
     private static function is_xhr_request()
     {
-        return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest';
+        return strpos($_SERVER['HTTP_ACCEPT'], "application/json") == 0;
     }
 }
 
