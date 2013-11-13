@@ -7,9 +7,9 @@ class Toro
         ToroHook::fire('before_request', compact('routes'));
 
         $request_method = strtolower($_SERVER['REQUEST_METHOD']);
-		if (isset($_GET['_method']) || isset($_POST['_method'])) {
-			$request_method = isset($_POST['_method']) ? $_POST['_method'] : $_GET['_method'];
-		}
+        if (isset($_GET['_method']) || isset($_POST['_method'])) {
+            $request_method = isset($_POST['_method']) ? $_POST['_method'] : $_GET['_method'];
+        }
         $path_info = '/';
         if (!empty($_SERVER['PATH_INFO'])) {
             $path_info = $_SERVER['PATH_INFO'];
