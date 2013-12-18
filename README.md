@@ -102,26 +102,27 @@ Toro::serve(array(
 ));
 
 class ExampleHandler {
-    function get($a, $b) {
-      echo $a; // Output: foo
-      echo $b; // Output: bar
+    function get($a) {
+      echo $a['param1']; // Output: foo
+      echo $a['param2']; // Output: bar
     }
 }
 
 class CatalogHandler {
     function __construct() {
-      ToroHook::add("before_handler", function($arr) {
-        echo $arr['regex_matches'][2]; // Output: foo
+      ToroHook::add("before_handler", function($toro) {
+        $static_parameters = end($toro['regex_matches']);
+        echo $static_parameters['param1']; // Output: foo
       }
     }
 
-    function get($page, $param) {
-      echo $param; // Output: foo
+    function get($page, $static_params) {
+      echo $static_params['param1']; // Output: foo
     }
 }
 ```
 
-Note that static parameters don't affect any HTTP data passed with request.
+Note that static parameters don't affect any HTTP data passed with the request.
 
 
 ## RESTful Handlers

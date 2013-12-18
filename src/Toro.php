@@ -57,23 +57,23 @@ class Toro
           |   ));
           |
           | ..with the route example above you can access `param1` and `param2`
-          | via 2 last parameters respectively (parameters names are not
-          | preserved). Assuming GET HTTP request is sent to `/woot`,
+          | via last parameter using their names in array fashion.
+          | Assuming GET HTTP request is sent to `/woot`,
           | Handler may look like following:
           |
           |   class MainHandler {
           |     function __construct() {
-          |       ToroHook::add("before_handler", function($arr) {
-          |         echo $arr['regex_matches'][1]; // Output: woot
-          |         echo $arr['regex_matches'][2]; // Output: foo
-          |         echo $arr['regex_matches'][3]; // Output: bar
+          |       ToroHook::add("before_handler", function($toro) {
+          |         $static_params = end($toro['regex_matches]);
+          |         echo $static_params['param1']; // Output: foo
+          |         echo $static_params['param2']; // Output: bar
           |       }
           |     }
           |
-          |     function get($a, $b, $c) {
-          |       echo '$a - '.$a; // Output: $a - woot
-          |       echo '$b - '.$b; // Output: $b - foo
-          |       echo '$c - '.$c; // Output: $c - bar
+          |     function get($a, $b) {
+          |       echo $a; // Output: woot
+          |       echo $b['param1']; // Output: foo
+          |       echo $b['param2']; // Output: bar
           |    }
           |   }
           |
@@ -82,17 +82,28 @@ class Toro
         if (is_string($discovered_handler) &&
             preg_match('/^[\w\\\]*\?([\w=&]*)$/', $discovered_handler, $matches)) {
 
-            // Because first item in array returned by preg_match() is
-            // cut before it's passed to Handler/Hook method, we add a
-            // "duck"
+            // Because first item in array with dynamic parameters returned by
+            // preg_match() is cut before array is passed to Handler/Hook
+            // method, we add a "duck" that will be cut instead of
+            // static parameters array (that we'll add) in case array with
+            // dynamic parameters is empty
             if( count($regex_matches) === 0 ) {
               array_push($regex_matches, null);
             }
 
-            array_walk(explode('&', $matches[1]), function($value, $key) use(&$regex_matches) {
-              list($param, $value) = array_values(explode('=', $value));
-              $regex_matches[] = $value;
+            $static_parameters = explode('&', $matches[1]);
+            array_walk($static_parameters, function($value, $key) use(&$static_parameters) {
+              unset($static_parameters[$key]);
+              list($param_name, $param_value) = array_values(explode('=', $value));
+              $static_parameters[$param_name] = $param_value;
             });
+
+            // Add array with static parameters to the end of array with
+            // dynamic parameters
+            array_push($regex_matches, $static_parameters);
+
+            // Well, we can't leave Handler namespace name with query string
+            // like that, right? Let's trim all the static parameters syntax off of it
             $discovered_handler = strstr($discovered_handler, '?', true);
 
         }
