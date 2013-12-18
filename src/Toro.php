@@ -42,6 +42,61 @@ class Toro
             }
         }
 
+        /*
+          |--------------------------------------------------------------------------
+          | Handler static parameters
+          |--------------------------------------------------------------------------
+          |
+          | Populate Handler methods(get(), post(), etc.) and hooks with parameters
+          | defined in Query String style Handler name suffix
+          |
+          | For example:
+          |
+          |   Toro::serve(array(
+          |     "/:string" => "MainHandler?param1=foo&param2=bar",
+          |   ));
+          |
+          | ..with the route example above you can access `param1` and `param2`
+          | via 2 last parameters respectively (parameters names are not
+          | preserved). Assuming GET HTTP request is sent to `/woot`,
+          | Handler may look like following:
+          |
+          |   class MainHandler {
+          |     function __construct() {
+          |       ToroHook::add("before_handler", function($arr) {
+          |         echo $arr['regex_matches'][1]; // Output: woot
+          |         echo $arr['regex_matches'][2]; // Output: foo
+          |         echo $arr['regex_matches'][3]; // Output: bar
+          |       }
+          |     }
+          |
+          |     function get($a, $b, $c) {
+          |       echo '$a - '.$a; // Output: $a - woot
+          |       echo '$b - '.$b; // Output: $b - foo
+          |       echo '$c - '.$c; // Output: $c - bar
+          |    }
+          |   }
+          |
+         */
+
+        if (is_string($discovered_handler) &&
+            preg_match('/^[\w\\\]*\?([\w=&]*)$/', $discovered_handler, $matches)) {
+
+            // Because first item in array returned by preg_match() is
+            // cut before it's passed to Handler/Hook method, we add a
+            // "duck"
+            if( count($regex_matches) === 0 ) {
+              array_push($regex_matches, null);
+            }
+
+            array_walk(explode('&', $matches[1]), function($value, $key) use(&$regex_matches) {
+              list($param, $value) = array_values(explode('=', $value));
+              $regex_matches[] = $value;
+            });
+            $discovered_handler = strstr($discovered_handler, '?', true);
+
+        }
+
         $result = null;
 
         $handler_instance = null;
