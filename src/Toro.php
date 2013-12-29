@@ -80,7 +80,7 @@ class Toro
          */
 
         if (is_string($discovered_handler) &&
-            preg_match('/^[\w\\\]*\?([\w=&]*)$/', $discovered_handler, $matches)) {
+            preg_match('/^[\w\\\]*\?([\w=&]+)$/', $discovered_handler, $matches)) {
 
             // Because first item in array with dynamic parameters returned by
             // preg_match() is cut before array is passed to Handler/Hook
@@ -92,11 +92,11 @@ class Toro
             }
 
             $static_parameters = explode('&', $matches[1]);
-            array_walk($static_parameters, function($value, $key) use(&$static_parameters) {
-              unset($static_parameters[$key]);
+            foreach( $static_parameters as $key => $value ) {
               list($param_name, $param_value) = array_values(explode('=', $value));
               $static_parameters[$param_name] = $param_value;
-            });
+              unset($static_parameters[$key]);
+            }
 
             // Add array with static parameters to the end of array with
             // dynamic parameters
