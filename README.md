@@ -185,7 +185,11 @@ You may need to add the following snippet in your Apache HTTP Server virtual
 host configuration or `.htaccess`:
 
 ```apacheconf
-FallbackResource /index.php
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond $1 !^(index\.php)
+RewriteRule ^(.*)$ /index.php/$1 [L]
 ```
 And for IIS you will need to install URL Rewrite for IIS and then add the following rule to your `web.config`:
 ```xml
