@@ -182,8 +182,13 @@ $ php composer.phar install
 ### Server Configuration
 
 You may need to add the following snippet in your Apache HTTP Server virtual
-host configuration or `.htaccess`:
+host configuration or `.htaccess`.
 
+Apache >= 2.2.16:
+```apacheconf
+FallbackResource /index.php
+```
+Apache < 2.2.16: 
 ```apacheconf
 RewriteEngine on
 RewriteCond %{REQUEST_FILENAME} !-f
