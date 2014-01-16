@@ -181,14 +181,10 @@ $ php composer.phar install
 
 ### Server Configuration
 
-You may need to add the following snippet in your Apache HTTP Server virtual
-host configuration or `.htaccess`.
+#### Apache
 
-Apache >= 2.2.16:
-```apacheconf
-FallbackResource /index.php
-```
-Apache < 2.2.16: 
+You may need to add the following snippet in your Apache HTTP server virtual host configuration or **.htaccess** file.
+
 ```apacheconf
 RewriteEngine on
 RewriteCond %{REQUEST_FILENAME} !-f
@@ -196,7 +192,15 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond $1 !^(index\.php)
 RewriteRule ^(.*)$ /index.php/$1 [L]
 ```
-And for IIS you will need to install URL Rewrite for IIS and then add the following rule to your `web.config`:
+
+Alternatively, if you’re lucky enough to be using a version of Apache greater than 2.2.16, then you can instead just use this one, single line:
+```apacheconf
+FallbackResource /index.php
+```
+
+#### IIS
+
+For IIS you will need to install URL Rewrite for IIS and then add the following rule to your `web.config`:
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
