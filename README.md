@@ -193,7 +193,7 @@ RewriteCond $1 !^(index\.php)
 RewriteRule ^(.*)$ /index.php/$1 [L]
 ```
 
-Alternatively, if you’re lucky enough to be using a version of Apache greater than 2.2.16, then you can instead just use this one, single line:
+Alternatively, if you’re lucky enough to be using a version of Apache greater than 2.2.15, then you can instead just use this one, single line:
 ```apacheconf
 FallbackResource /index.php
 ```
