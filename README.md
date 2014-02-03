@@ -162,6 +162,15 @@ Install composer in your project:
 ```sh
 $ curl -s https://getcomposer.org/installer | php
 ```
+**Caution**: The above command requires you to place a lot of trust in the composer team to not get hacked and have a backdoor installed in their installer script. If secuity is a concern, consider doing the following:
+
+```sh
+$ curl -s https://getcomposer.org/installer > installer.php
+$ less installer.php
+$ # When you're certain it's safe...
+$ php installer.php
+```
+
 
 Create a `composer.json` file in your project root:
 
