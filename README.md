@@ -111,6 +111,33 @@ From the above, you can see two emergent patterns.
    JSON/`XMLHTTPRequest` requests. If the `_xhr` method is not implemented,
    then the given HTTP request method is called as a fallback.
 
+## Custom Handlers
+
+```php
+<?php
+
+class ProductHandler {
+
+    function index() {
+        echo "All products";
+    }
+
+    function show($name) {
+        echo "You want to see product: $name";
+    }
+}
+
+Toro::serve(array(
+    "/products" => "ProductHandler@index",
+    "/products/:string" => "ProductHandler@show",
+));
+```
+
+In addition to methods names after HTTP request method being called automatically
+you can append an '@' symble followed by a method name to call a specific method
+in the class. For example a handler of ProductHander@show will call the show method
+on the ProductHander class.
+
 
 ## ToroHook (Callbacks)
 
