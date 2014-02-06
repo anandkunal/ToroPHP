@@ -21,11 +21,11 @@ class Toro
             }
         }
 
-        $discovered_handler = null;
+        $className = null;
         $regex_matches = array();
 
         if (isset($routes[$path_info])) {
-            $discovered_handler = $routes[$path_info];
+            $className = $routes[$path_info];
         }
         else if ($routes) {
             $tokens = array(
@@ -36,36 +36,35 @@ class Toro
             foreach ($routes as $pattern => $handler_name) {
                 $pattern = strtr($pattern, $tokens);
                 if (preg_match('#^/?' . $pattern . '/?$#', $path_info, $matches)) {
-                    $discovered_handler = $handler_name;
+                    $className = $handler_name;
                     $regex_matches = $matches;
                     break;
                 }
             }
         }
 
-        if (strpos($discovered_handler, '@')) {
-            $position = strpos($discovered_handler, '@');
-            $method = substr($discovered_handler, $position + 1);
-
-            $discovered_handler = substr($discovered_handler, 0, $position);
+        if (strpos($className, '@')) {
+            $position = strpos($className, '@');
+            $method = substr($className, $position + 1);
+            $className = substr($className, 0, $position);
         }
 
         $result = null;
 
-        $handler_instance = null;
-        if ($discovered_handler) {
-            if (is_string($discovered_handler)) {
-                $handler_instance = new $discovered_handler();
+        $classInstance = null;
+        if ($className) {
+            if (is_string($className)) {
+                $classInstance = new $className();
             }
-            elseif (is_callable($discovered_handler)) {
-                $handler_instance = $discovered_handler();
+            elseif (is_callable($className)) {
+                $classInstance = $className();
             }
         }
 
-        if ($handler_instance) {
+        if ($classInstance) {
             unset($regex_matches[0]);
 
-            if (self::is_xhr_request() && method_exists($handler_instance, $method . '_xhr')) {
+            if (self::is_xhr_request() && method_exists($classInstance, $method . '_xhr')) {
                 header('Content-type: application/json')
                 ;
                 header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
@@ -77,22 +76,22 @@ class Toro
 
             }
 
-            if (method_exists($handler_instance, $method)) {
+            if (method_exists($classInstance, $method)) {
                 ToroHook::fire('before_handler',
-                    compact('routes', 'discovered_handler', 'request_method', 'regex_matches'));
-                $result = call_user_func_array(array($handler_instance, $method), $regex_matches);
+                    compact('routes', 'className', 'request_method', 'regex_matches'));
+                $result = call_user_func_array(array($classInstance, $method), $regex_matches);
                 ToroHook::fire('after_handler', compact('routes', 'disco
                     vered_handler', 'request_method', 'regex_matches', 'result'));
             }
             else {
-                ToroHook::fire('404', compact('routes', 'discovered_handler', 'request_method', 'regex_matches'));
+                ToroHook::fire('404', compact('routes', 'className', 'request_method', 'regex_matches'));
             }
         }
         else {
-            ToroHook::fire('404', compact('routes', 'discovered_handler', 'request_method', 'regex_matches'));
+            ToroHook::fire('404', compact('routes', 'className', 'request_method', 'regex_matches'));
         }
 
-        ToroHook::fire('after_request', compact('routes', 'discovered_handler', 'request_method', 'regex_matches', 'result'));
+        ToroHook::fire('after_request', compact('routes', 'className', 'request_method', 'regex_matches', 'result'));
     }
 
     private static function is_xhr_request()
