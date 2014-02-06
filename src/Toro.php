@@ -65,23 +65,19 @@ class Toro
             unset($regex_matches[0]);
 
             if (self::is_xhr_request() && method_exists($handler_instance, $request_method . '_xhr')) {
-                header('Content-type: application/json')
-                ;
+                header('Content-type: application/json');
                 header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
                 header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
                 header('Cache-Control: no-store, no-cache, must-revalidate');
                 header('Cache-Control: post-check=0, pre-check=0', false);
                 header('Pragma: no-cache');
                 $request_method .= '_xhr';
-
             }
 
             if (method_exists($handler_instance, $request_method)) {
-                ToroHook::fire('before_handler',
-                    compact('routes', 'discovered_handler', 'request_method', 'regex_matches'));
+                ToroHook::fire('before_handler', compact('routes', 'discovered_handler', 'request_method', 'regex_matches'));
                 $result = call_user_func_array(array($handler_instance, $request_method), $regex_matches);
-                ToroHook::fire('after_handler', compact('routes', 'disco
-                    vered_handler', 'request_method', 'regex_matches', 'result'));
+                ToroHook::fire('after_handler', compact('routes', 'discovered_handler', 'request_method', 'regex_matches', 'result'));
             }
             else {
                 ToroHook::fire('404', compact('routes', 'discovered_handler', 'request_method', 'regex_matches'));
