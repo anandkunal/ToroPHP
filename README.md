@@ -191,6 +191,19 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond $1 !^(index\.php)
 RewriteRule ^(.*)$ /index.php/$1 [L]
 ```
+
+Or, if you're putting index.php into a subdirectory the following host
+configuration might be a better fit.
+
+```apacheconf
+RewriteBase /INSERT/PATH/TO/BASE/DIRECTORY
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond $1 !^(index\.php)
+RewriteRule .* index.php/$1 [L]
+```
+
 And for IIS you will need to add the following rule to your `web.config`:
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
