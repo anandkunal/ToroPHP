@@ -230,7 +230,7 @@ For IIS you will need to install URL Rewrite for IIS and then add the following 
 </configuration>
 ```
 
-### Nginx
+#### Nginx
 
 Under the `server` block of your virtual host configuration, you only need to add three lines.
 ```conf
