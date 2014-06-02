@@ -230,6 +230,15 @@ For IIS you will need to install URL Rewrite for IIS and then add the following 
 </configuration>
 ```
 
+### Nginx
+
+Under the `server` block of your virtual host configuration, you only need to add three lines.
+```conf
+location / {
+  try_files $uri $uri/ /index.php?$query_string;
+}
+```
+
 ## Contributions
 
 - Toro was inspired by the [Tornado Web Server](http://www.tornadoweb.org)
