@@ -19,7 +19,7 @@ class Toro
                 $path_info = (strpos($_SERVER['REQUEST_URI'], '?') > 0) ? strstr($_SERVER['REQUEST_URI'], '?', true) : $_SERVER['REQUEST_URI'];
             }
         }
-        
+
         $discovered_handler = null;
         $regex_matches = array();
 
@@ -44,18 +44,19 @@ class Toro
 
         $result = null;
 
+        unset($regex_matches[0]);
+
         $handler_instance = null;
         if ($discovered_handler) {
             if (is_string($discovered_handler)) {
                 $handler_instance = new $discovered_handler();
             }
             elseif (is_callable($discovered_handler)) {
-                $handler_instance = $discovered_handler();
+                $handler_instance = call_user_func_array($discovered_handler, $regex_matches);
             }
         }
 
         if ($handler_instance) {
-            unset($regex_matches[0]);
 
             if (self::is_xhr_request() && method_exists($handler_instance, $request_method . '_xhr')) {
                 header('Content-type: application/json');
