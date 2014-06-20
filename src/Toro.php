@@ -22,7 +22,12 @@ class Toro
         
         $discovered_handler = null;
         $regex_matches = array();
-
+        $base_url = dirname($_SERVER['SCRIPT_NAME']);
+        
+        if ($base_url != "/"){
+            $routes = self::append_base_url($routes);
+        }
+        
         if (isset($routes[$path_info])) {
             $discovered_handler = $routes[$path_info];
         }
@@ -53,6 +58,7 @@ class Toro
                 $handler_instance = $discovered_handler();
             }
         }
+        
 
         if ($handler_instance) {
             unset($regex_matches[0]);
@@ -86,6 +92,15 @@ class Toro
     private static function is_xhr_request()
     {
         return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest';
+    }
+    
+    private static function append_base_url(Array $routes){
+        $base_url = dirname($_SERVER['SCRIPT_NAME']);
+        $new_routes = array();
+        foreach ($routes as $path => $handler){
+            $new_routes[$base_url . $path] = $routes[$path];
+        }
+        return $new_routes;
     }
 }
 
