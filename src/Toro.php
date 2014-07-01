@@ -1,5 +1,7 @@
 <?php
 
+namespace ToroRouter;
+
 class Toro
 {
     public static function serve($routes)
