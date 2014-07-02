@@ -1,12 +1,12 @@
 <?php
 
-namespace ToroRouter;
+namespace Toro;
 
-class Toro
+class Router
 {
     public static function serve($routes)
     {
-        ToroHook::fire('before_request', compact('routes'));
+        RouterCallback::fire('before_request', compact('routes'));
 
         $request_method = strtolower($_SERVER['REQUEST_METHOD']);
         $path_info = '/';
@@ -70,19 +70,19 @@ class Toro
             }
 
             if (method_exists($handler_instance, $request_method)) {
-                ToroHook::fire('before_handler', compact('routes', 'discovered_handler', 'request_method', 'regex_matches'));
+                RouterCallback::fire('before_handler', compact('routes', 'discovered_handler', 'request_method', 'regex_matches'));
                 $result = call_user_func_array(array($handler_instance, $request_method), $regex_matches);
-                ToroHook::fire('after_handler', compact('routes', 'discovered_handler', 'request_method', 'regex_matches', 'result'));
+                RouterCallback::fire('after_handler', compact('routes', 'discovered_handler', 'request_method', 'regex_matches', 'result'));
             }
             else {
-                ToroHook::fire('404', compact('routes', 'discovered_handler', 'request_method', 'regex_matches'));
+                RouterCallback::fire('404', compact('routes', 'discovered_handler', 'request_method', 'regex_matches'));
             }
         }
         else {
-            ToroHook::fire('404', compact('routes', 'discovered_handler', 'request_method', 'regex_matches'));
+            RouterCallback::fire('404', compact('routes', 'discovered_handler', 'request_method', 'regex_matches'));
         }
 
-        ToroHook::fire('after_request', compact('routes', 'discovered_handler', 'request_method', 'regex_matches', 'result'));
+        RouterCallback::fire('after_request', compact('routes', 'discovered_handler', 'request_method', 'regex_matches', 'result'));
     }
 
     private static function is_xhr_request()
@@ -91,7 +91,7 @@ class Toro
     }
 }
 
-class ToroHook
+class RouterCallback
 {
     private static $instance;
 
@@ -119,7 +119,7 @@ class ToroHook
     public static function get_instance()
     {
         if (empty(self::$instance)) {
-            self::$instance = new ToroHook();
+            self::$instance = new RouterCallback();
         }
         return self::$instance;
     }
