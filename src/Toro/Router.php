@@ -6,7 +6,7 @@ class Router
 {
     public static function serve($routes)
     {
-        RouterCallback::fire('before_request', compact('routes'));
+        Hook::fire('before_request', compact('routes'));
 
         $request_method = strtolower($_SERVER['REQUEST_METHOD']);
         $path_info = '/';
@@ -70,19 +70,19 @@ class Router
             }
 
             if (method_exists($handler_instance, $request_method)) {
-                RouterCallback::fire('before_handler', compact('routes', 'discovered_handler', 'request_method', 'regex_matches'));
+                Hook::fire('before_handler', compact('routes', 'discovered_handler', 'request_method', 'regex_matches'));
                 $result = call_user_func_array(array($handler_instance, $request_method), $regex_matches);
-                RouterCallback::fire('after_handler', compact('routes', 'discovered_handler', 'request_method', 'regex_matches', 'result'));
+                Hook::fire('after_handler', compact('routes', 'discovered_handler', 'request_method', 'regex_matches', 'result'));
             }
             else {
-                RouterCallback::fire('404', compact('routes', 'discovered_handler', 'request_method', 'regex_matches'));
+                Hook::fire('404', compact('routes', 'discovered_handler', 'request_method', 'regex_matches'));
             }
         }
         else {
-            RouterCallback::fire('404', compact('routes', 'discovered_handler', 'request_method', 'regex_matches'));
+            Hook::fire('404', compact('routes', 'discovered_handler', 'request_method', 'regex_matches'));
         }
 
-        RouterCallback::fire('after_request', compact('routes', 'discovered_handler', 'request_method', 'regex_matches', 'result'));
+        Hook::fire('after_request', compact('routes', 'discovered_handler', 'request_method', 'regex_matches', 'result'));
     }
 
     private static function is_xhr_request()
@@ -91,7 +91,7 @@ class Router
     }
 }
 
-class RouterCallback
+class Hook
 {
     private static $instance;
 
@@ -119,7 +119,7 @@ class RouterCallback
     public static function get_instance()
     {
         if (empty(self::$instance)) {
-            self::$instance = new RouterCallback();
+            self::$instance = new Hook();
         }
         return self::$instance;
     }
