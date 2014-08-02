@@ -16,7 +16,10 @@ class Toro
         }
         else {
             if (!empty($_SERVER['REQUEST_URI'])) {
-                $path_info = (strpos($_SERVER['REQUEST_URI'], '?') > 0) ? strstr($_SERVER['REQUEST_URI'], '?', true) : $_SERVER['REQUEST_URI'];
+                $path_info = strtok($_SERVER['REQUEST_URI'], '?');
+            }
+            else{
+                die("Unable to route.");
             }
         }
         
