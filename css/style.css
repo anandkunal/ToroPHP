@@ -1,0 +1,142 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #72747f url(../img/bg.jpg);
+  color: #eee;
+  font-family: "PT Sans", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  text-shadow: 0 .1em .1em rgba(0,0,0,.25);
+}
+
+h2 {
+  font-weight: normal;
+  line-height: 0;
+  height: 0;
+  border-bottom: .1em solid #999;
+  vertical-align: middle;
+  text-align: center;
+}
+h2 span {
+  background: #72747f url(../img/bg.jpg);
+  color: #333;
+  padding: 0 2.5em;
+  font-weight: bold;
+  text-shadow: none;
+}
+
+p {
+  margin: 0 0 30px;
+}
+
+a {
+  color: #fff;
+  text-decoration: none;
+}
+a:hover,
+a:active,
+a:focus {
+  text-decoration: underline;
+}
+
+code {
+  font-family: monospace;
+  font-size: 14px;
+  background: #204a82;
+  padding: .2em .5em;
+  border-radius: .2em;
+}
+
+.container {
+  max-width: 750px;
+  margin: 60px auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.header {
+  font-size: 20px;
+  text-transform:uppercase;
+  color: #aaa;
+}
+
+.logo {
+  display: block;
+  max-width: 100%;
+  margin: 0 auto 30px;
+  position: relative;
+}
+
+.nav li {
+  line-height: 2;
+  list-style: none;
+}
+
+@media screen and (min-width: 720px) {
+  .nav li {
+    line-height: 1.1;
+    position: relative;
+    display: inline-block;
+    margin: 0 1em;
+  }
+  .nav li:before {
+    content: ' ';
+    display: block;
+    border-left: 0.1em solid #aaa;
+    position: absolute;
+    top: .1em;
+    left: -1.1em;
+    bottom: .2em;
+  }
+  .nav li:first-child:before {
+    display: none;
+  }
+  .nav a {
+    display: block;
+  }
+}
+
+.intro {
+  margin: 60px 0;
+  padding: 60px 0 0;
+  border-top: 1px solid #999;
+  font-size: 26px;
+  line-height: 40px;
+}
+
+.download {
+  margin: 60px 0;
+  padding: 60px 0 0;
+  border-top: 1px solid #999;
+  font-size: 22px;
+}
+
+.explanation {
+  font-size: 16px;
+  margin: 30px 0 60px;
+  line-height: 28px;
+}
+
+.gist {
+  text-align: left;
+  text-shadow: none;
+  margin: 4em 2.5em 2.5em;
+}
+.gist:last-child {
+  width: 200px;
+}
+
+.footer {
+  line-height: 24px;
+  margin: 60px 0 0;
+}
+
+.github-ribbon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border: 0;
+}

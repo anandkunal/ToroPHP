@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>ToroPHP</title>
+    <meta name="description" content="Toro is a tiny router that lets you develop PHP web applications quickly. It's used by hundreds of hackers at startups, universities, and agencies.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="favicon.ico" rel="shortcut icon" />
+    <link href="//fonts.googleapis.com/css?family=PT+Sans:400,700" rel="stylesheet" />
+    <link href="css/style.css" rel="stylesheet" />
+    <script>
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-102178-12']);
+      _gaq.push(['_trackPageview']);
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="container" id="wrap">
+      <div class="header">
+        <img src="img/logo.png" alt="ToroPHP logo" class="logo" />
+        <ul class="nav">
+          <li><a href="https://github.com/anandkunal/ToroPHP">GitHub</a></li>
+          <li><a href="https://github.com/anandkunal/ToroPHP/blob/master/README.md">Documentation</a></li>
+          <li><a href="https://github.com/anandkunal/ToroPHP/wiki/Changelog">Changelog</a></li>
+          <li><a href="https://github.com/anandkunal/ToroPHP/wiki/Design-Goals">Design Goals</a></li>
+        </ul>
+      </div>
+      <p class="intro">
+        Toro is a PHP router for developing <abbr title="Representation State Transfer">REST</abbr>ful web applications and <abbr title="Application Programming Interface">API</abbr>s.
+        It is designed for minimalists who want to get work done.
+      </p>
+      <h2>
+        <span>"Hello, world"</span>
+      </h2>
+      <script src="//gist.github.com/729837.js?file=toro_hello_world.php"></script>
+      <div class="explanation">
+        First, create a handler to support the <code>GET</code> requests.
+        Then call <code>serve</code> with an array of routes.
+        That's it.
+      </div>
+      <h2>
+        <span>Routing Basics</span>
+      </h2>
+      <script src="//gist.github.com/3376192.js?file=toro_routing_basics.php"></script>
+      <div class="explanation">
+        Routes are expressed as an associative array.
+        Stubs, such as <code>:number</code>, <code>:string</code>, and <code>:alpha</code>, can be used instead of common regular expressions.
+        Of course, regular expressions are still welcome.
+      </div>
+      <h2>
+        <span>RESTful Handlers</span>
+      </h2>
+      <script src="//gist.github.com/3376202.js?file=toro_restful_handlers.php"></script>
+      <div class="explanation">
+        Handlers support all HTTP methods, such as <code>GET</code>, <code>POST</code>, <code>PUT</code>, and <code>DELETE</code>.
+        Appending <code>_xhr</code> matches JSON requests.
+        If the <code>_xhr</code> method is not implemented, then the given request method is called.
+      </div>
+      <h2>
+        <span>ToroHook</span>
+      </h2>
+      <script src="//gist.github.com/3376212.js?file=toro_hook_example.php"></script>
+      <div class="explanation">
+        Toro has a simple callback system called ToroHook.
+        There are five hooks: <code>404</code>, <code>before_request</code>, <code>after_request</code>, <code>before_handler</code>, and <code>after_handler</code>.
+        Adding a hook pushes the anonymous function into an array.
+        When a hook is fired, all of the functions are called sequentially.
+      </div>
+      <div class="download">
+        <a href="https://github.com/anandkunal/ToroPHP/blob/master/README.md">Read the documentation</a>,
+        <a href="https://github.com/anandkunal/ToroPHP/zipball/master">download a zip</a>, or
+        <a href="https://github.com/anandkunal/ToroPHP">browse the source</a>.
+      </div>
+      <p class="footer">ToroPHP was made by <a href="http://kunalanand.com/">Kunal Anand</a> (<a href="http://twitter.com/ka">@ka</a>) and <a href="https://github.com/anandkunal/ToroPHP/contributors">maintained by awesome people</a>.</p>
+    </div>
+    <a href="https://github.com/anandkunal/ToroPHP">
+      <img src="//s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" alt="Fork me on GitHub" class="github-ribbon" />
+    </a>
+  </body>
+</html>
