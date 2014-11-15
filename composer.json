@@ -53,7 +53,8 @@
     },
     "autoload": {
         "files": [
-            "src/Toro.php"
+            "src/Toro.php",
+            "src/ToroHook.php"
         ]
     }
 }
