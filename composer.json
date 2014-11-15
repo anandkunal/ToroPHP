@@ -52,9 +52,8 @@
         "php": ">=5.3.0"
     },
     "autoload": {
-        "files": [
-            "src/Toro.php",
-            "src/ToroHook.php"
-        ]
+        "psr-4": {
+            "Toro\\": "src/"
+        }
     }
 }
