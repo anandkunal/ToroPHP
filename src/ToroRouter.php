@@ -1,5 +1,5 @@
 <?php
-class Toro
+class ToroRouter
 {
     public static function serve($routes)
     {
