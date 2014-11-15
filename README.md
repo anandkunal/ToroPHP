@@ -14,26 +14,28 @@ designed for minimalists who want to get work done.
 
 - RESTful routing using strings, regular expressions, and defined types
   (`number`, `string`, `alpha`)
-- Flexible error handling and callbacks via `ToroHook`
-- Intuitive and self-documented core (`Toro.php`)
-- Tested with PHP 5.3 and above
+- Flexible error handling and callbacks via `Toro\Hook`
+- Intuitive and self-documented core (`Toro\Router.php`)
+- Tested with PHP 5.4 and above
 
 
-## "Hello, world"
+## “Hello, world”
 
-The canonical "Hello, world" example:
+The canonical “Hello, world” example:
 
 ```php
 <?php
 
-class HelloHandler {
-    function get() {
-        echo "Hello, world";
+class HelloHandler
+{
+    function get()
+    {
+        echo 'Hello, world.';
     }
 }
 
-Toro::serve(array(
-    "/" => "HelloHandler",
+Toro\Router::serve(array(
+    '/' => 'HelloHandler',
 ));
 ```
 
@@ -45,15 +47,15 @@ Routing with Toro is simple:
 ```php
 <?php
 
-Toro::serve(array(
-    "/" => "SplashHandler",
-    "/catalog/page/:number" => "CatalogHandler",
-    "/product/:alpha" => "ProductHandler",
-    "/manufacturer/:string" => "ManufacturerHandler"
-));
+Toro\Router::serve([
+    '/' => 'SplashHandler',
+    '/catalog/page/:number' => 'CatalogHandler',
+    '/product/:alpha' => 'ProductHandler',
+    '/manufacturer/:string' => 'ManufacturerHandler',
+]);
 ```
 
-An application's route table is expressed as an associative array
+An application’s route table is expressed as an associative array
 (`route_pattern => handler`). This is closely modeled after
 [Tornado](http://tornadoweb.org) (Python). Routes are not expressed as
 anonymous functions to prevent unnecessary code duplication for RESTful
@@ -67,23 +69,25 @@ also be expressed as:
 ```php
 <?php
 
-Toro::serve(array(
-    "/" => "SplashHandler",
-    "/catalog/page/([0-9]+)" => "CatalogHandler",
-    "/product/([a-zA-Z0-9-_]+)" => "ProductHandler",
-    "/manufacturer/([a-zA-Z]+)" => "ManufacturerHandler"
-));
+Toro\Router::serve([
+    '/' => 'SplashHandler',
+    '/catalog/page/([0-9]+)' => 'CatalogHandler',
+    '/product/([a-zA-Z0-9-_]+)' => 'ProductHandler',
+    '/manufacturer/([a-zA-Z]+)' => 'ManufacturerHandler',
+]);
 ```
 
-Pattern matches are passed in order as arguments to the handler's request
+Pattern matches are passed in order as arguments to the handler’s request
 method. In the case of `ProductHandler` above:
 
 ```php
 <?php
 
-class ProductHandler {
-    function get($name) {
-        echo "You want to see product: $name";
+class ProductHandler
+{
+    function get($name)
+    {
+        printf('You want to see product: %s', $name);
     }
 }
 ```
@@ -93,8 +97,8 @@ class ProductHandler {
 
 ```php
 <?php
-
-class ExampleHandler {
+class ExampleHandler
+{
     function get() {}
     function post() {}
     function get_xhr() {}
@@ -107,41 +111,43 @@ From the above, you can see two emergent patterns.
 1. Methods named after the HTTP request method (`GET`, `POST`, `PUT`,
    `DELETE`) are automatically called.
 
-2. Appending `_xhr` to a handler method automatically matches
-   JSON/`XMLHTTPRequest` requests. If the `_xhr` method is not implemented,
-   then the given HTTP request method is called as a fallback.
+2. Appending `_xhr` to a handler method automatically matches AJAX requests.
+   If the `_xhr` method is not implemented, then the given HTTP request method
+   is called as a fallback.
 
 
 ## ToroHook (Callbacks)
 
-As of v2.0.0, there are a total of five Toro-specific hooks (callbacks):
+As of v3.0.0, there are a total of five Toro-specific hooks (callbacks):
 
 ```php
 <?php
 
-// Fired for 404 errors; must be defined before Toro::serve() call
-ToroHook::add("404",  function() {});
+// Fired for 404 errors; must be defined before Toro\Router::serve() call
+Toro\Hook::add('404',  function() {});
 
-// Before/After callbacks in order
-ToroHook::add("before_request", function() {});
-ToroHook::add("before_handler", function() {});
-ToroHook::add("after_handler", function() {});
-ToroHook::add("after_request",  function() {});
+// Before/after callbacks in order
+Toro\Hook::add('before_request', function() {});
+Toro\Hook::add('before_handler', function() {});
+Toro\Hook::add('after_handler', function() {});
+Toro\Hook::add('after_request',  function() {});
 ```
 
 `before_handler` and `after_handler` are defined within handler's constructor:
 
 ```php
 <?php
-
-class SomeHandler {
-    function __construct() {
-        ToroHook::add("before_handler", function() { echo "Before"; });
-        ToroHook::add("after_handler", function() { echo "After"; });
+class SomeHandler
+{
+    function __construct()
+    {
+        Toro\Hook::add('before_handler', function() { echo 'Before'; });
+        Toro\Hook::add('after_handler', function() { echo 'After'; });
     }
 
-    function get() {
-        echo "I am some handler.";
+    function get()
+    {
+        echo 'I am some handler.';
     }
 }
 ```
@@ -153,46 +159,19 @@ sequentially.
 
 ## Installation
 
-Grab a copy of the repository and move `Toro.php` to your project root.
+### Via Composer
 
-### Using Composer
+Toro can be installed via Composer by running the following command in your
+command line application:
 
-Install composer in your project:
-
-```sh
-$ curl -s https://getcomposer.org/installer | php
-```
-**Caution**: The above command requires you to place a lot of trust in the composer team to not get hacked and have a backdoor installed in their installer script. If secuity is a concern, consider doing the following:
-
-```sh
-$ curl -s https://getcomposer.org/installer > installer.php
-$ less installer.php
-$ # When you're certain it's safe...
-$ php installer.php
-```
-
-
-Create a `composer.json` file in your project root:
-
-```js
-{
-    "require": {
-        "torophp/torophp": "dev-master"
-    }
-}
-```
-
-Install via composer:
-
-```sh
-$ php composer.phar install
-```
+    $ composer require torophp/torophp
 
 ### Server Configuration
 
 #### Apache
 
-You may need to add the following snippet in your Apache HTTP server virtual host configuration or **.htaccess** file.
+You may need to add the following snippet in your Apache HTTP server virtual
+host configuration or **.htaccess** file.
 
 ```apacheconf
 RewriteEngine on
@@ -202,14 +181,18 @@ RewriteCond $1 !^(index\.php)
 RewriteRule ^(.*)$ /index.php/$1 [L]
 ```
 
-Alternatively, if you’re lucky enough to be using a version of Apache greater than 2.2.15, then you can instead just use this one, single line:
+Alternatively, if you’re lucky enough to be using a version of Apache greater
+than 2.2.15, then you can instead just use this one, single line:
+
 ```apacheconf
 FallbackResource /index.php
 ```
 
 #### IIS
 
-For IIS you will need to install URL Rewrite for IIS and then add the following rule to your `web.config`:
+For IIS you will need to install URL Rewrite for IIS and then add the following
+rule to your `web.config`:
+
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
@@ -230,9 +213,11 @@ For IIS you will need to install URL Rewrite for IIS and then add the following 
 </configuration>
 ```
 
-#### Nginx
+#### nginx
 
-Under the `server` block of your virtual host configuration, you only need to add three lines.
+Under the `server` block of your virtual host configuration, you only need to
+add three lines:
+
 ```conf
 location / {
   try_files $uri $uri/ /index.php?$query_string;
@@ -250,7 +235,7 @@ location / {
 - [Danillo César de O. Melo](https://github.com/danillos/fire_event/blob/master/Event.php) for `ToroHook`
 - [Jason Mooberry](http://jasonmooberry.com) for code optimizations and feedback
 
-Contributions to Toro are welcome via pull requests.
+Contributions to Toro are welcome via Pull Requests.
 
 
 ## License
