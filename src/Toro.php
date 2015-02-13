@@ -46,6 +46,13 @@ class Toro
 
         $handler_instance = null;
         if ($discovered_handler) {
+
+        	if (strpos($discovered_handler, '@') !== false) {
+        		$arr = explode('@', $discovered_handler);
+        		$discovered_handler = $arr[0];
+        		$request_method = $arr[1];
+        	}
+
             if (is_string($discovered_handler)) {
                 $handler_instance = new $discovered_handler();
             }
