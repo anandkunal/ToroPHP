@@ -215,16 +215,15 @@ For IIS you will need to install URL Rewrite for IIS and then add the following 
 <configuration>
     <system.webServer>
         <rewrite>
-            <rules>
-                <rule name="Toro" stopProcessing="true">
-                    <match url="^(.*)$" />
-                    <conditions logicalGrouping="MatchAll">
-                        <add input="{REQUEST_FILENAME}" matchType="IsFile" negate="true" />
-                        <add input="{REQUEST_FILENAME}" matchType="IsDirectory" negate="true" />
-                    </conditions>
-                    <action type="Rewrite" url="index.php/{R:1}" />
-                </rule>
-            </rules>
+          <rule name="Toro" stopProcessing="true">
+            <match url="^(.*)$" ignoreCase="false" />
+              <conditions logicalGrouping="MatchAll">
+                <add input="{REQUEST_FILENAME}" matchType="IsFile" ignoreCase="false" negate="true" />
+                <add input="{REQUEST_FILENAME}" matchType="IsDirectory" ignoreCase="false" negate="true" />
+                <add input="{R:1}" pattern="^(index\.php)" ignoreCase="false" negate="true" />
+              </conditions>
+            <action type="Rewrite" url="/index.php/{R:1}" />
+          </rule>
         </rewrite>
     </system.webServer>
 </configuration>
