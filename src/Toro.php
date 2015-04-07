@@ -73,11 +73,19 @@ class Toro
                 ToroHook::fire('after_handler', compact('routes', 'discovered_handler', 'request_method', 'regex_matches', 'result'));
             }
             else {
-                ToroHook::fire('404', compact('routes', 'discovered_handler', 'request_method', 'regex_matches'));
+                if (self::is_xhr_request() || self::is_json_request()) {
+                    ToroHook::fire('404', compact('routes', 'discovered_handler', 'request_method', 'regex_matches'));
+                } else {
+                    ToroHook::fire('404Web', compact('routes', 'discovered_handler', 'request_method', 'regex_matches'));
+                }
             }
         }
         else {
-            ToroHook::fire('404', compact('routes', 'discovered_handler', 'request_method', 'regex_matches'));
+            if (self::is_xhr_request() || self::is_json_request()) {
+                ToroHook::fire('404', compact('routes', 'discovered_handler', 'request_method', 'regex_matches'));
+            } else {
+                ToroHook::fire('404Web', compact('routes', 'discovered_handler', 'request_method', 'regex_matches'));
+            }
         }
 
         ToroHook::fire('after_request', compact('routes', 'discovered_handler', 'request_method', 'regex_matches', 'result'));
@@ -86,6 +94,11 @@ class Toro
     private static function is_xhr_request()
     {
         return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest';
+    }
+
+    private static function is_json_request()
+    {
+        return (isset($_SERVER['HTTP_ACCEPT']) && stripos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false) || (isset($_SERVER['CONTENT_TYPE']) && stripos($_SERVER['CONTENT_TYPE'], 'application/json') !== false);
     }
 }
 
