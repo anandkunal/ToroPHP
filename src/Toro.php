@@ -8,14 +8,13 @@ class Toro
 
         $request_method = strtolower($_SERVER['REQUEST_METHOD']);
         $path_info = '/';
-        if (!empty($_SERVER['PATH_INFO'])) {
+
+        if (! empty($_SERVER['PATH_INFO'])) {
             $path_info = $_SERVER['PATH_INFO'];
-        }
-        else if (!empty($_SERVER['ORIG_PATH_INFO']) && $_SERVER['ORIG_PATH_INFO'] !== '/index.php') {
+        } elseif (! empty($_SERVER['ORIG_PATH_INFO']) && $_SERVER['ORIG_PATH_INFO'] !== '/index.php') {
             $path_info = $_SERVER['ORIG_PATH_INFO'];
-        }
-        else {
-            if (!empty($_SERVER['REQUEST_URI'])) {
+        } else {
+            if (! empty($_SERVER['REQUEST_URI'])) {
                 $path_info = (strpos($_SERVER['REQUEST_URI'], '?') > 0) ? strstr($_SERVER['REQUEST_URI'], '?', true) : $_SERVER['REQUEST_URI'];
             }
         }
@@ -25,8 +24,7 @@ class Toro
 
         if (isset($routes[$path_info])) {
             $discovered_handler = $routes[$path_info];
-        }
-        else if ($routes) {
+        } elseif ($routes) {
             $tokens = array(
                 ':string' => '([a-zA-Z]+)',
                 ':number' => '([0-9]+)',
@@ -43,13 +41,12 @@ class Toro
         }
 
         $result = null;
-
         $handler_instance = null;
+
         if ($discovered_handler) {
             if (is_string($discovered_handler)) {
                 $handler_instance = new $discovered_handler();
-            }
-            elseif (is_callable($discovered_handler)) {
+            } elseif (is_callable($discovered_handler)) {
                 $handler_instance = $discovered_handler();
             }
         }
@@ -71,12 +68,10 @@ class Toro
                 ToroHook::fire('before_handler', compact('routes', 'discovered_handler', 'request_method', 'regex_matches'));
                 $result = call_user_func_array(array($handler_instance, $request_method), $regex_matches);
                 ToroHook::fire('after_handler', compact('routes', 'discovered_handler', 'request_method', 'regex_matches', 'result'));
-            }
-            else {
+            } else {
                 ToroHook::fire('404', compact('routes', 'discovered_handler', 'request_method', 'regex_matches'));
             }
-        }
-        else {
+        } else {
             ToroHook::fire('404', compact('routes', 'discovered_handler', 'request_method', 'regex_matches'));
         }
 
