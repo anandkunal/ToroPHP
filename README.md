@@ -89,6 +89,42 @@ class ProductHandler {
 ```
 
 
+## Static parameters
+
+It's also possible to pass static parameters to Handler method/hook, for example:
+
+```php
+<?php
+
+Toro::serve(array(
+    "/" => "ExampleHandler?param1=foo&param2=bar",
+    "/catalog/page/([0-9]+)" => "CatalogHandler?param1=foo",
+));
+
+class ExampleHandler {
+    function get($a) {
+      echo $a['param1']; // Output: foo
+      echo $a['param2']; // Output: bar
+    }
+}
+
+class CatalogHandler {
+    function __construct() {
+      ToroHook::add("before_handler", function($toro) {
+        $static_parameters = end($toro['regex_matches']);
+        echo $static_parameters['param1']; // Output: foo
+      }
+    }
+
+    function get($page, $static_params) {
+      echo $static_params['param1']; // Output: foo
+    }
+}
+```
+
+Note that static parameters don't affect any HTTP data passed with the request.
+
+
 ## RESTful Handlers
 
 ```php
