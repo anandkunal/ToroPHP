@@ -51,10 +51,13 @@ class Toro
             }
         }
 
+        # header("Access-Control-Allow-Origin: *"); # remove the hash to allow cross origin api call
         if ($handler_instance) {
             unset($regex_matches[0]);
 
             if (self::is_xhr_request() && method_exists($handler_instance, $request_method . '_xhr')) {
+                # header("Access-Control-Allow-Headers: X-Requested-With, Content-Type"); # remove to facilitate Ajax
+                # header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS")
                 header('Content-type: application/json');
                 header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
                 header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
