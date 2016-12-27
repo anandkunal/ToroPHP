@@ -2,7 +2,7 @@
 
 class Toro
 {
-    public static function serve($routes)
+    public static function serve($routes,$prefix='')
     {
         ToroHook::fire('before_request', compact('routes'));
 
@@ -18,7 +18,10 @@ class Toro
                 $path_info = (strpos($_SERVER['REQUEST_URI'], '?') > 0) ? strstr($_SERVER['REQUEST_URI'], '?', true) : $_SERVER['REQUEST_URI'];
             }
         }
-        
+        $prefix_length=strlen($prefix);
+        if($prefix_length>0 && 0===strpos($path_info,$prefix)){
+            $path_info=substr($path_info,$prefix_length);
+        }
         $discovered_handler = null;
         $regex_matches = array();
 

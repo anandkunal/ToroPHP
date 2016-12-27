@@ -1,5 +1,5 @@
 {
-    "name": "torophp/torophp",
+    "name": "schorsch3000/torophp",
     "type": "library",
     "description": "Toro is a PHP router for developing RESTful web applications and APIs.",
     "keywords": [
@@ -11,6 +11,10 @@
     "license": "MIT",
     "authors": [
         {
+            "name": "dirk heilig",
+            "email": "dicky.dicky@gmail.com",
+            "role": "Contributor"
+        },{
             "name": "Kunal Anand",
             "email": "kunal.r.anand@gmail.com",
             "homepage": "http://kunalanand.com/",
