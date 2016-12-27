@@ -28,7 +28,8 @@ class Toro
             $tokens = array(
                 ':string' => '([a-zA-Z]+)',
                 ':number' => '([0-9]+)',
-                ':alpha'  => '([a-zA-Z0-9-_]+)'
+                ':alpha'  => '([a-zA-Z0-9-_]+)',
+                ':any'    => '(.*)' 
             );
             foreach ($routes as $pattern => $handler_name) {
                 $pattern = strtr($pattern, $tokens);
@@ -66,6 +67,7 @@ class Toro
 
             if (method_exists($handler_instance, $request_method)) {
                 ToroHook::fire('before_handler', compact('routes', 'discovered_handler', 'request_method', 'regex_matches'));
+                count($regex_matches)==1?$regex_matches = explode('/',$regex_matches[1]):FALSE;
                 $result = call_user_func_array(array($handler_instance, $request_method), $regex_matches);
                 ToroHook::fire('after_handler', compact('routes', 'discovered_handler', 'request_method', 'regex_matches', 'result'));
             } else {
