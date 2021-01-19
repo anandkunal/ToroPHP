@@ -1,0 +1,11 @@
+<?php
+ require("toro.php";
+ class hello handler{
+    function get(){
+        echo"hello world";
+    }
+  }
+  toro::serve(array(
+     "/" => "hello handler",
+         ))
+?>
